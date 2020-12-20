@@ -1,0 +1,1 @@
+https://raw.githubusercontent.com/regadas/github-actions-dhall/dcd71670484439bfe7fe14ba669d6e137076a17b/schemas.dhall sha256:e23064d43ac3eecdf3bfd45aa4e17758a5edb979f0cb611e344d80bdca418156

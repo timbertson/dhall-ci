@@ -1,4 +1,4 @@
-let Prelude = ../Dependencies/Prelude.dhall
+let Prelude = ../dependencies/Prelude.dhall
 
 let Env = Prelude.Map.Type Text Text
 

@@ -1,3 +1,3 @@
-let Base = ../Dependencies/Workflow.dhall
+let Base = ../dependencies/Workflow.dhall
 
 in  List { mapKey : Text, mapValue : Base.Job.Type }

@@ -2,7 +2,7 @@ let Bash = ../Bash/package.dhall
 
 let Env = ./Env.dhall
 
-let Base = ../Dependencies/Workflow.dhall
+let Base = ../dependencies/Workflow.dhall
 
 let Step = Base.Step.Type
 

@@ -22,6 +22,6 @@ RUN bash -xc 'curl -sSL "https://github.com/dhall-lang/dhall-haskell/releases/do
 RUN bash -xc 'curl -sSL "https://github.com/dhall-lang/dhall-haskell/releases/download/$DHALL_VERSION/dhall-yaml-$DHALL_YAML_VERSION-x86_64-linux.tar.bz2" | tar -C /usr -xj'
 
 # breakme...
-# RUN false
+RUN false
 
 WORKDIR /

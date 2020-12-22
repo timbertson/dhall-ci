@@ -59,7 +59,8 @@ let ci =
 
 in  { files =
             Render.SelfInstall.files Render.SelfInstall::{=}
-        //  { `.github/workflow/docker.yml` = (Render.YAMLFile Workflow.Type)::{
+        //  { `.github/workflows/docker.yml` = ( Render.YAMLFile Workflow.Type
+                                               )::{
               , install = Render.Install.Write
               , contents = ci
               }

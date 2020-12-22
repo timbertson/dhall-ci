@@ -1,3 +1,16 @@
+{-
+TODO:
+
+ - LICENCE
+ - README.md as components, with defaults:
+   - header for component repos
+   - CI actions badge
+
+ - auto-update workflow
+   - could get tricky. For library dependencies, we want to bump them if the (semantic)
+     hash of the import changes. But for dhall/files dependencies, we should only
+     bother with an update if it alters the result of `./dhall/ci`
+-}
 let CI = ../dhall/dependencies/CI.dhall
 
 let Bash = CI.Bash

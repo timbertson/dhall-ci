@@ -43,7 +43,13 @@ let Readme =
 
       let statusBadge =
             \(opts : Opts) ->
-              "![CI](https://github.com/${opts.owner}/${opts.repo}/workflows/CI/badge.svg)"
+              let img =
+                    "![CI](https://github.com/${opts.owner}/${opts.repo}/workflows/CI/badge.svg)"
+
+              let url =
+                    "https://github.com/${opts.owner}/${opts.repo}/actions?query=workflow%3ACI+branch%3Amaster"
+
+              in  "[${img}](${url})"
 
       let componentHeader =
             \(opts : Opts) ->

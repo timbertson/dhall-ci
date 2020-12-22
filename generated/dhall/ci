@@ -4,4 +4,6 @@
 
 set -eu -o pipefail
 dhall --ascii lint --transitive "package.dhall"
+dhall --ascii lint --transitive "dhall/files.dhall"
 dhall/render
+dhall --ascii lint --transitive "Meta/package.dhall"

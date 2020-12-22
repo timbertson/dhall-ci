@@ -1,15 +1,16 @@
-let Render = ./dependencies/Render.dhall
-
 let CI = ./dependencies/CI.dhall
 
-let Bash = CI.Bash
+let Meta = ../Meta/package.dhall
 
 let Dhall = CI.Dhall
+
 let Docker = CI.Docker.Workflow
 
 let Git = CI.Git.Workflow
-let Workflow = CI.Workflow
 
+let Render = CI.Render
+
+let Workflow = CI.Workflow
 
 let dhallVersion = { dhall = "1.33.0", json = "1.7.0", yaml = "1.2.0" }
 
@@ -41,14 +42,17 @@ let ci =
                         }
                     : List CI.Workflow.Step.Type
                   )
-                # [
-                  (Workflow.Step.bash (
-                    CI.Docker.runInCwd CI.Docker.Run::{
-                      , image = Docker.commitImage image
-                    }
-                    (CI.Git.requireCleanWorkspaceAfterRunning ["./dhall/ci"])
-                  )) // { name = Some "Check generated files" }
-                ]
+                # [     Workflow.Step.bash
+                          ( CI.Docker.runInCwd
+                              CI.Docker.Run::{
+                              , image = Docker.commitImage image
+                              }
+                              ( CI.Git.requireCleanWorkspaceAfterRunning
+                                  [ "./dhall/ci" ]
+                              )
+                          )
+                    //  { name = Some "Check generated files" }
+                  ]
             }
           }
       }
@@ -59,12 +63,9 @@ in  { files =
               , install = Render.Install.Write
               , contents = ci
               }
-            , `dhall/ci` = Render.Executable::{
-                contents = Bash.renderScript (Bash.join
-                [
-                  , Dhall.lint Dhall.Lint::{file = "package.dhall"}
-                  , Dhall.render Dhall.Render::{=}
-                ])
-              }
             }
+        //  Meta.files
+              Meta.Files::{
+              , ciExtra = Dhall.lint Dhall.Lint::{ file = "Meta/package.dhall" }
+              }
     }

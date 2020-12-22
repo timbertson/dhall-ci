@@ -12,11 +12,11 @@ let Render = CI.Render
 
 let Workflow = CI.Workflow
 
-let dhallVersion = { dhall = "1.33.0", json = "1.7.0", yaml = "1.2.0" }
+let dhallVersion = { dhall = "1.37.1", json = "1.7.4", yaml = "1.2.4" }
 
 let image =
       CI.Docker.Image::{
-      , name = "${CI.Docker.Registry.github}/timbertson/dhall-ci"
+      , name = "${CI.Docker.Registry.github}/timbertson/dhall-ci/dhall"
       }
 
 let ci =
@@ -28,7 +28,9 @@ let ci =
           { build = Workflow.Job::{
             , runs-on = CI.Workflow.ubuntu
             , steps =
-                  [ Git.checkout Git.Checkout::{=} : CI.Workflow.Step.Type ]
+                  [ Git.checkout Git.Checkout::{=} : CI.Workflow.Step.Type
+                  , Docker.loginToGithub
+                  ]
                 # (   Docker.Project.steps
                         Docker.Project::{
                         , image

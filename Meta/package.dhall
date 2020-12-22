@@ -101,7 +101,7 @@ let ci =
       \(opts : Files.Type) ->
         CI.Workflow::{
         , name = "CI"
-        , on = Git.pullRequestOrMain
+        , on = Git.pullRequestOrBranches [ "*" ]
         , jobs = toMap
             { build = Workflow.Job::{
               , runs-on = CI.Workflow.ubuntu

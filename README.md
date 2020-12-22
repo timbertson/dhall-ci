@@ -65,7 +65,7 @@ It's not useful for composing expressions, but it _is_ useful for composing comm
 
 It has some opinions, namely that every script shall use `set -eu -o pipefail`. The `renderScript` enforces this, and snippets may not do the right thing if you use them in a script without these settings.
 
-# Workflow:
+### Workflow:
 
 This module contains the types for generating [github workflow](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions) documents.
 

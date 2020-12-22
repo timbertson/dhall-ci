@@ -10,6 +10,13 @@ TODO:
    - could get tricky. For library dependencies, we want to bump them if the (semantic)
      hash of the import changes. But for dhall/files dependencies, we should only
      bother with an update if it alters the result of `./dhall/ci`
+
+ - versioning workflow
+   - use autorelease action
+   - use derived-commits
+   - cleanup derived branches
+
+
 -}
 let CI = ../dhall/dependencies/CI.dhall
 

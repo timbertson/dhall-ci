@@ -13,7 +13,7 @@ Dhall provides (I believe) a very well-fitting solution to this problem, because
 This solution is intentionally decentralised, because:
 
  - a single repository trying to solve every use case is not going to scale well, and I don't want to have to curate libraries for ecosystems I have never used
- - dhall's remote imports are low friction compared to most languages, so there's little downside
+ - it's a good opportunity to dogfood the ergonomics of this setup itself, since each component's CI setup is maintained using `dhall-ci`
 
 By building it decentralised in the first place, anyone can contribute to the ecosystem by simply following the common patterns.
 

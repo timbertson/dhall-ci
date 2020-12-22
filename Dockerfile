@@ -9,6 +9,7 @@ RUN apk add \
 	git \
 	make \
 	ruby \
+	ruby-json \
 	;
 
 # These versions are set in `files.dhall`

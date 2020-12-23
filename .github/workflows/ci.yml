@@ -35,6 +35,7 @@ jobs:
       uses: "docker/build-push-action@v2"
       with:
         push: true
+        context: .
         tags: |
           ghcr.io/timbertson/dhall-ci:test
           ghcr.io/timbertson/dhall-ci:test-SHA

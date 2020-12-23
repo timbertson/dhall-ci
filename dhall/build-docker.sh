@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 set -eux
+# Requirements:
+# - can't use docker buildx, it's too hard :sigh:
+# - need to enable preview feature (new registry, ghcr.io) -- https://docs.github.com/en/free-pro-team@latest/packages/guides/migrating-to-github-container-registry-for-docker-images
+# - pobably has issues when we want to do dynamic naming (but maybe we can just tag with commit)
+
 # TODO create-or-use
 # --load
 # docker buildx inspect --bootstrap

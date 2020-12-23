@@ -10,12 +10,12 @@ jobs:
       with:
         fetch-depth: '1'
     - env:
-        DOCKER_PASSWORD: "${{ secrets.GITHUB_TOKEN }}"
+        DOCKER_PASSWORD: "${{ secrets.GHTOKEN_PAT }}"
       name: Login to docker.pkg.github.com
       run: |-
         set -eu -o pipefail
         set -x
-        docker login -u "$GITHUB_ACTOR" --password-stdin docker.pkg.github.com <<EOF
+        docker login -u "$GITHUB_ACTOR" --password-stdin ghcr.io <<EOF
         $DOCKER_PASSWORD
         EOF
     # - name: Docker build
@@ -36,11 +36,11 @@ jobs:
       with:
         push: true
         tags: |
-          ghcr.io/timbertson/dhall-ci/dhall:test
-          ghcr.io/timbertson/dhall-ci/dhall:test-SHA
+          ghcr.io/timbertson/dhall-ci:test
+          ghcr.io/timbertson/dhall-ci:test-SHA
         cache-from: |
-          ghcr.io/timbertson/dhall-ci/dhall:latest
-          ghcr.io/timbertson/dhall-ci/dhall:test
+          ghcr.io/timbertson/dhall-ci:latest
+          ghcr.io/timbertson/dhall-ci:test
         build-args: |
           DHALL_VERSION=1.37.1
           DHALL_JSON_VERSION=1.7.4

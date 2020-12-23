@@ -12,9 +12,9 @@ let ternaryStr =
 
         in  "${json}[${condition}]"
 
-let isPullRequest = "github.event == 'pull_request'"
+let isPullRequest = "github.event_name == 'pull_request'"
 
-let isPush = "github.event == 'push'"
+let isPush = "github.event_name == 'push'"
 
 let isPushToMain =
     -- (or master)

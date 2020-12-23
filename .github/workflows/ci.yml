@@ -20,8 +20,8 @@ jobs:
         EOF
     - env:
         result: ${{ fromJson(format('["{0}","{1}"]', github.ref, format('refs/heads/{0}',
-          github.head_ref)))[github.event == 'pull_request'] }}
-      if: github.event == 'pull_request'
+          github.head_ref)))[github.event_name == 'pull_request'] }}
+      if: github.event_name == 'pull_request'
       name: Test branchRef (PR)
       run: |-
         set -eu -o pipefail
@@ -29,8 +29,8 @@ jobs:
         [ "$result" = "refs/heads/$GITHUB_HEAD_REF" ]
     - env:
         result: ${{ fromJson(format('["{0}","{1}"]', github.ref, format('refs/heads/{0}',
-          github.head_ref)))[github.event == 'pull_request'] }}
-      if: github.event == 'push' && (github.ref == 'refs/heads/master' || github.ref
+          github.head_ref)))[github.event_name == 'pull_request'] }}
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref
         == 'refs/heads/master')
       name: Test branchRef (push)
       run: |-

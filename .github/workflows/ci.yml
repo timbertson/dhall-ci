@@ -38,7 +38,7 @@ jobs:
         set -x
         [ "$result" = "$GITHUB_REF" ]
     - env:
-        BRANCH_REF: github.head_ref || github.ref
+        BRANCH_REF: "${{ github.head_ref || github.ref }}"
       name: Docker build
       run: |-
         set -eu -o pipefail

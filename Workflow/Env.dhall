@@ -1,7 +1,3 @@
-let Prelude = ../dependencies/Prelude.dhall
+let Env = List { mapKey : Text, mapValue : Text }
 
-let Env = Prelude.Map.Type Text Text
-
-let expression = \(expr : Text) -> "\${{ ${expr} }}"
-
-in  { Type = Env, empty = [] : Env, expression }
+in  { Type = Env, empty = [] : Env }

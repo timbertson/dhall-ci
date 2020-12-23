@@ -18,6 +18,25 @@ jobs:
         docker login -u "$GITHUB_ACTOR" --password-stdin docker.pkg.github.com <<EOF
         $DOCKER_PASSWORD
         EOF
+    - env:
+        result: ${{ fromJson(format('["{0}","{1}"]', github.ref, format('refs/heads/{0}',
+          github.head_ref)))[github.event == 'pull_request'] }}
+      if: github.event == 'pull_request'
+      name: Test branchRef (PR)
+      run: |-
+        set -eu -o pipefail
+        set -x
+        [ "$result" = "refs/heads/$GITHUB_HEAD_REF" ]
+    - env:
+        result: ${{ fromJson(format('["{0}","{1}"]', github.ref, format('refs/heads/{0}',
+          github.head_ref)))[github.event == 'pull_request'] }}
+      if: github.event == 'push' && (github.ref == 'refs/heads/master' || github.ref
+        == 'refs/heads/master')
+      name: Test branchRef (push)
+      run: |-
+        set -eu -o pipefail
+        set -x
+        [ "$result" = "$GITHUB_REF" ]
     - name: Docker build
       run: |-
         set -eu -o pipefail

@@ -3,6 +3,7 @@
 # You should NOT edit it manually, your changes will be lost.
 
 set -eu -o pipefail
+dhall --ascii --output /dev/null --file "package.dhall"
 dhall --ascii lint --transitive "package.dhall"
 dhall --ascii lint --transitive "dhall/files.dhall"
 dhall/render

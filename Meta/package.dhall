@@ -92,7 +92,8 @@ let Files =
         { ciScript = [] : Bash.Type
         , ciSteps = [] : List Workflow.Step.Type
         , ciImage = CI.Docker.Image::{
-          , name = "${CI.Docker.Registry.github}/timbertson/dhall-ci/dhall"
+          , name =
+              "${CI.Docker.Registry.githubPackages}/timbertson/dhall-ci/dhall"
           }
         }
       }
@@ -101,7 +102,7 @@ let ci =
       \(opts : Files.Type) ->
         CI.Workflow::{
         , name = "CI"
-        , on = Git.pullRequestOrBranches [ "*" ]
+        , on = Git.pullRequestOrMain
         , jobs = toMap
             { build = Workflow.Job::{
               , runs-on = CI.Workflow.ubuntu
@@ -130,7 +131,8 @@ let files =
               , contents =
                   Bash.renderScript
                     ( Bash.join
-                        [ Dhall.lint Dhall.Lint::{ file = "package.dhall" }
+                        [ Dhall.evaluateAndLint
+                            Dhall.Lint::{ file = "package.dhall" }
                         , Dhall.lint Dhall.Lint::{ file = "dhall/files.dhall" }
                         , Dhall.render Dhall.Render::{=}
                         , opts.ciScript

@@ -36,11 +36,11 @@ jobs:
       with:
         push: true
         tags: |
-          docker.pkg.github.com/timbertson/dhall-ci/dhall:test
-          docker.pkg.github.com/timbertson/dhall-ci/dhall:test-SHA
+          ghcr.io/timbertson/dhall-ci/dhall:test
+          ghcr.io/timbertson/dhall-ci/dhall:test-SHA
         cache-from: |
-          docker.pkg.github.com/timbertson/dhall-ci/dhall:latest
-          docker.pkg.github.com/timbertson/dhall-ci/dhall:test
+          ghcr.io/timbertson/dhall-ci/dhall:latest
+          ghcr.io/timbertson/dhall-ci/dhall:test
         build-args: |
           DHALL_VERSION=1.37.1
           DHALL_JSON_VERSION=1.7.4

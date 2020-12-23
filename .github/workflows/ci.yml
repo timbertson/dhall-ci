@@ -18,14 +18,38 @@ jobs:
         docker login -u "$GITHUB_ACTOR" --password-stdin docker.pkg.github.com <<EOF
         $DOCKER_PASSWORD
         EOF
-    - name: Docker build
-      run: |-
-        set -eu -o pipefail
-        set -x
-        # env DOCKER_BUILDKIT=1 docker "build" "--progress=plain" "--file=Dockerfile" "--build-arg=DHALL_VERSION=1.37.1" "--build-arg=DHALL_JSON_VERSION=1.7.4" "--build-arg=DHALL_YAML_VERSION=1.2.4" "--build-arg=BUILDKIT_INLINE_CACHE=1" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:latest" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "$(if [[ -n ${GITHUB_HEAD_REF:-} ]]; then echo "$GITHUB_HEAD_REF"; else echo "${GITHUB_REF##refs/heads/}"; fi)" | tr / -)" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "$(if [[ -n ${GITHUB_HEAD_REF:-} ]]; then echo "$GITHUB_HEAD_REF"; else echo "${GITHUB_REF##refs/heads/}"; fi)" | tr / -)" "."
-        ./dhall/build-docker.sh
-        # docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA"
-        docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "$(if [[ -n ${GITHUB_HEAD_REF:-} ]]; then echo "$GITHUB_HEAD_REF"; else echo "${GITHUB_REF##refs/heads/}"; fi)" | tr / -)"
+    # - name: Docker build
+    #   run: |-
+    #     set -eu -o pipefail
+    #     set -x
+    #     # env DOCKER_BUILDKIT=1 docker "build" "--progress=plain" "--file=Dockerfile" "--build-arg=DHALL_VERSION=1.37.1" \
+    #     # "--build-arg=DHALL_JSON_VERSION=1.7.4" "--build-arg=DHALL_YAML_VERSION=1.2.4" "--build-arg=BUILDKIT_INLINE_CACHE=1"
+    #     # "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:latest" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "$(if [[ -n ${GITHUB_HEAD_REF:-} ]]; then echo "$GITHUB_HEAD_REF"; else echo "${GITHUB_REF##refs/heads/}"; fi)" | tr / -)" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "$(if [[ -n ${GITHUB_HEAD_REF:-} ]]; then echo "$GITHUB_HEAD_REF"; else echo "${GITHUB_REF##refs/heads/}"; fi)" | tr / -)" "."
+    #     ./dhall/build-docker.sh
+    #     # docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA"
+    #     docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "$(if [[ -n ${GITHUB_HEAD_REF:-} ]]; then echo "$GITHUB_HEAD_REF"; else echo "${GITHUB_REF##refs/heads/}"; fi)" | tr / -)"
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    - name: Docker build(2)
+      uses: "docker/build-push-action@v2"
+      with:
+        push: true
+        tags: |
+          docker.pkg.github.com/timbertson/dhall-ci/dhall:test
+          docker.pkg.github.com/timbertson/dhall-ci/dhall:test-SHA
+        push: true
+        cache-from: |
+          docker.pkg.github.com/timbertson/dhall-ci/dhall:latest
+          docker.pkg.github.com/timbertson/dhall-ci/dhall:test
+        build-args: |
+          DHALL_VERSION=1.37.1
+          DHALL_JSON_VERSION=1.7.4
+          DHALL_YAML_VERSION=1.2.4
+
+
+
+
     - if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref
         == 'refs/heads/master')
       name: Docker push :latest

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -eux
+# TODO create-or-use
+# --load
+# docker buildx inspect --bootstrap
 env DOCKER_CLI_EXPERIMENTAL=enabled \
 	docker buildx \
 		"build" "--progress=plain" "--file=Dockerfile" \

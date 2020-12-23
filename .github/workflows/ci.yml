@@ -37,15 +37,17 @@ jobs:
         set -eu -o pipefail
         set -x
         [ "$result" = "$GITHUB_REF" ]
-    - name: Docker build
+    - env:
+        BRANCH_REF: github.head_ref || github.ref
+      name: Docker build
       run: |-
         set -eu -o pipefail
         set -x
         docker pull "docker.pkg.github.com/timbertson/dhall-ci/dhall:latest" || true
-        docker pull "docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "$(if [[ -n ${GITHUB_HEAD_REF:-} ]]; then echo "$GITHUB_HEAD_REF"; else echo "${GITHUB_REF##refs/heads/}"; fi)" | tr / -)" || true
-        env DOCKER_BUILDKIT=1 docker "build" "--progress=plain" "--file=Dockerfile" "--build-arg=DHALL_VERSION=1.37.1" "--build-arg=DHALL_JSON_VERSION=1.7.4" "--build-arg=DHALL_YAML_VERSION=1.2.4" "--build-arg=BUILDKIT_INLINE_CACHE=1" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:latest" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "$(if [[ -n ${GITHUB_HEAD_REF:-} ]]; then echo "$GITHUB_HEAD_REF"; else echo "${GITHUB_REF##refs/heads/}"; fi)" | tr / -)" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "$(if [[ -n ${GITHUB_HEAD_REF:-} ]]; then echo "$GITHUB_HEAD_REF"; else echo "${GITHUB_REF##refs/heads/}"; fi)" | tr / -)" "."
+        docker pull "docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" || true
+        env DOCKER_BUILDKIT=1 docker "build" "--progress=plain" "--file=Dockerfile" "--build-arg=DHALL_VERSION=1.37.1" "--build-arg=DHALL_JSON_VERSION=1.7.4" "--build-arg=DHALL_YAML_VERSION=1.2.4" "--build-arg=BUILDKIT_INLINE_CACHE=1" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:latest" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" "."
         docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA"
-        docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "$(if [[ -n ${GITHUB_HEAD_REF:-} ]]; then echo "$GITHUB_HEAD_REF"; else echo "${GITHUB_REF##refs/heads/}"; fi)" | tr / -)"
+        docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)"
     - if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref
         == 'refs/heads/master')
       name: Docker push :latest

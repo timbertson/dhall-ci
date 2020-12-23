@@ -38,7 +38,6 @@ jobs:
         tags: |
           docker.pkg.github.com/timbertson/dhall-ci/dhall:test
           docker.pkg.github.com/timbertson/dhall-ci/dhall:test-SHA
-        push: true
         cache-from: |
           docker.pkg.github.com/timbertson/dhall-ci/dhall:latest
           docker.pkg.github.com/timbertson/dhall-ci/dhall:test
@@ -68,7 +67,7 @@ jobs:
         <<EOF_diff\n      dhall/ci\n    \nEOF_diff\n    exit 1\n  fi\n\nEOF_runInDocker"
 name: CI
 'on':
-  pull_request: {}
+  # pull_request: {}
   push:
     branches:
     - "*"

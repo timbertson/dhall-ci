@@ -34,7 +34,7 @@ jobs:
     - name: Docker build(2)
       uses: "docker/build-push-action@v2"
       with:
-        push: true
+        # push: true
         context: .
         load: true # put into docker
         tags: |

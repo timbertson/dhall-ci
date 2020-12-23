@@ -36,10 +36,12 @@ jobs:
       with:
         push: true
         context: .
+        load: true # put into docker
         tags: |
           ghcr.io/timbertson/dhall-ci:test
           ghcr.io/timbertson/dhall-ci:test-SHA
         cache-from: |
+          type=registry,ref=ghcr.io/timbertson/dhall-ci:test
           ghcr.io/timbertson/dhall-ci:latest
           ghcr.io/timbertson/dhall-ci:test
         build-args: |

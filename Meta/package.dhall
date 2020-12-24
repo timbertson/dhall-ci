@@ -1,11 +1,6 @@
 {-
 TODO:
 
- - LICENCE
- - README.md as components, with defaults:
-   - header for component repos
-   - CI actions badge
-
  - freeze external imports
 
  - auto-update workflow
@@ -19,7 +14,6 @@ TODO:
    - cleanup derived branches
 
 -}
-
 let CI = ../dhall/dependencies/CI.dhall
 
 let Prelude = ../dependencies/Prelude.dhall

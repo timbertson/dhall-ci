@@ -19,13 +19,13 @@ let workflowTestSteps =
         //  { name = Some "Test branchRef (PR)"
             , `if` = Some Workflow.Expr.isPullRequest
             , env = Some
-                (toMap { result = Workflow.Expr.embed Workflow.Expr.branchRef })
+                (toMap { result = Workflow.expr Workflow.Expr.branchRef })
             }
       ,     Workflow.Step.bash [ "[ \"\$result\" = \"\$GITHUB_REF\" ]" ]
         //  { name = Some "Test branchRef (push)"
             , `if` = Some Workflow.Expr.isPushToMain
             , env = Some
-                (toMap { result = Workflow.Expr.embed Workflow.Expr.branchRef })
+                (toMap { result = Workflow.expr Workflow.Expr.branchRef })
             }
       ]
 

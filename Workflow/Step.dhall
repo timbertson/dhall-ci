@@ -33,10 +33,4 @@ let bash =
         , run = Some (Bash.render (Bash.strict # Bash.trace # bash))
         }
 
-in  { Type = Step
-    , default = Base.Step.default
-    , addEnv
-    , addParams
-    , bash
-    , cmd = \(cmd : Text) -> bash [ cmd ]
-    }
+in  { addEnv, addParams, bash, cmd = \(cmd : Text) -> bash [ cmd ] }

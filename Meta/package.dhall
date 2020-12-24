@@ -6,6 +6,8 @@ TODO:
    - header for component repos
    - CI actions badge
 
+ - freeze external imports
+
  - auto-update workflow
    - could get tricky. For library dependencies, we want to bump them if the (semantic)
      hash of the import changes. But for dhall/files dependencies, we should only
@@ -17,6 +19,7 @@ TODO:
    - cleanup derived branches
 
 -}
+
 let CI = ../dhall/dependencies/CI.dhall
 
 let Prelude = ../dependencies/Prelude.dhall
@@ -102,7 +105,7 @@ let ci =
       \(opts : Files.Type) ->
         CI.Workflow::{
         , name = "CI"
-        , on = Git.pullRequestOrMain
+        , on = Workflow.On.pullRequestOrMain
         , jobs = toMap
             { build = Workflow.Job::{
               , runs-on = CI.Workflow.ubuntu

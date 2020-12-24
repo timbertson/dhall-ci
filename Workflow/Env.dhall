@@ -1,3 +1,5 @@
 let Env = List { mapKey : Text, mapValue : Text }
 
-in  { Type = Env, empty = [] : Env }
+let githubToken = toMap { GITHUB_TOKEN = "\${{ secrets.GITHUB_TOKEN }}" }
+
+in  { Type = Env, empty = [] : Env, githubToken }

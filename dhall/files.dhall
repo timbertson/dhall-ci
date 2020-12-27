@@ -32,9 +32,7 @@ let DhallVersion = { tag : Text, dhall : Text, json : Text, yaml : Text }
 let dhallVersion =
       { tag = "1.37", dhall = "1.37.1", json = "1.7.4", yaml = "1.2.4" }
 
-let priorVersions =
-        [ { tag = "1.33", dhall = "1.33.1", json = "1.7.0", yaml = "1.2.0" } ]
-      : List DhallVersion
+let priorVersions = [] : List DhallVersion
 
 let image = Meta.Files.default.ciImage // { tag = Some dhallVersion.dhall }
 

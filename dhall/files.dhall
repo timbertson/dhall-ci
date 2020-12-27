@@ -1,5 +1,7 @@
 let CI = ./dependencies/CI.dhall
 
+let Prelude = ../dependencies/Prelude.dhall
+
 let Meta = ../Meta/package.dhall
 
 let Dhall = CI.Dhall
@@ -7,10 +9,6 @@ let Dhall = CI.Dhall
 let Docker = CI.Docker.Workflow
 
 let Workflow = CI.Workflow
-
-let dhallVersion = { dhall = "1.37.1", json = "1.7.4", yaml = "1.2.4" }
-
-let image = Meta.Files.default.ciImage
 
 let workflowTestSteps =
     -- a few tests for workflow conditional values
@@ -29,20 +27,40 @@ let workflowTestSteps =
             }
       ]
 
-let dockerSteps =
-    -- TODO: publish multiple dhall versions
+let DhallVersion = { tag : Text, dhall : Text, json : Text, yaml : Text }
+
+let dhallVersion =
+      { tag = "1.37", dhall = "1.37.1", json = "1.7.4", yaml = "1.2.4" }
+
+let priorVersions = [] : List DhallVersion
+
+let image = Meta.Files.default.ciImage // { tag = Some dhallVersion.dhall }
+
+let publishVerison =
+      \(version : DhallVersion) ->
         Docker.Project.steps
           Docker.Project::{
-          , image
+          , image = image // { tag = Some version.tag }
           , build = CI.Docker.Build::{
             , buildArgs =
-              [ "DHALL_VERSION=${dhallVersion.dhall}"
-              , "DHALL_JSON_VERSION=${dhallVersion.json}"
-              , "DHALL_YAML_VERSION=${dhallVersion.yaml}"
+              [ "DHALL_VERSION=${version.dhall}"
+              , "DHALL_JSON_VERSION=${version.json}"
+              , "DHALL_YAML_VERSION=${version.yaml}"
               ]
             }
           }
-      : List CI.Workflow.Step.Type
+
+let dockerSteps =
+    -- steps to build & publish each version of dhall
+        Prelude.List.concat
+          Workflow.Step.Type
+          ( Prelude.List.map
+              DhallVersion
+              (List Workflow.Step.Type)
+              publishVerison
+              ([ dhallVersion ] # priorVersions)
+          )
+      : List Workflow.Step.Type
 
 in  { files =
         Meta.files

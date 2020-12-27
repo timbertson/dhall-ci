@@ -7,8 +7,6 @@ in  { isPush
     , isPushToMain =
         -- (or master)
         "${isPush} && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/master')"
-    , isPushToVersionBranch =
-        "${isPush} && startsWith(github.ref, 'refs/heads/v') && contains(github.ref, '.x')"
     , branchRef =
         -- GH expressions strangely lack a builtin for this.
         -- `github.head_ref` is the branch name, only defined for a PR

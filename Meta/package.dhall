@@ -1,11 +1,6 @@
 {-
 TODO:
 
- - LICENCE
- - README.md as components, with defaults:
-   - header for component repos
-   - CI actions badge
-
  - freeze external imports
 
  - auto-update workflow
@@ -19,7 +14,6 @@ TODO:
    - cleanup derived branches
 
 -}
-
 let CI = ../dhall/dependencies/CI.dhall
 
 let Prelude = ../dependencies/Prelude.dhall
@@ -110,9 +104,7 @@ let ci =
             { build = Workflow.Job::{
               , runs-on = CI.Workflow.ubuntu
               , steps =
-                    [ Git.checkout Git.Checkout::{=} : CI.Workflow.Step.Type
-                    , Docker.loginToGithub
-                    ]
+                    [ Git.checkout Git.Checkout::{=}, Docker.loginToGithub ]
                   # opts.ciSteps
                   # [     Workflow.Step.bash
                             ( CI.Docker.runInCwd

@@ -43,19 +43,38 @@ jobs:
       run: |-
         set -eu -o pipefail
         set -x
-        docker pull "docker.pkg.github.com/timbertson/dhall-ci/dhall:latest" || true
+        docker pull "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37" || true
         docker pull "docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" || true
-        env DOCKER_BUILDKIT=1 docker "build" "--progress=plain" "--file=Dockerfile" "--build-arg=DHALL_VERSION=1.37.1" "--build-arg=DHALL_JSON_VERSION=1.7.4" "--build-arg=DHALL_YAML_VERSION=1.2.4" "--build-arg=BUILDKIT_INLINE_CACHE=1" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:latest" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" "."
+        env DOCKER_BUILDKIT=1 docker "build" "--progress=plain" "--file=Dockerfile" "--build-arg=DHALL_VERSION=1.37.1" "--build-arg=DHALL_JSON_VERSION=1.7.4" "--build-arg=DHALL_YAML_VERSION=1.2.4" "--build-arg=BUILDKIT_INLINE_CACHE=1" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" "."
         docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA"
         docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)"
     - if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref
         == 'refs/heads/master')
-      name: Docker push :latest
+      name: Docker push :1.37
       run: |-
         set -eu -o pipefail
         set -x
-        docker tag "docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "docker.pkg.github.com/timbertson/dhall-ci/dhall:latest"
-        docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:latest"
+        docker tag "docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37"
+        docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37"
+    - env:
+        BRANCH_REF: "${{ github.head_ref || github.ref }}"
+      name: Docker build
+      run: |-
+        set -eu -o pipefail
+        set -x
+        docker pull "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.33" || true
+        docker pull "docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" || true
+        env DOCKER_BUILDKIT=1 docker "build" "--progress=plain" "--file=Dockerfile" "--build-arg=DHALL_VERSION=1.33.1" "--build-arg=DHALL_JSON_VERSION=1.7.0" "--build-arg=DHALL_YAML_VERSION=1.2.0" "--build-arg=BUILDKIT_INLINE_CACHE=1" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:1.33" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" "."
+        docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA"
+        docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)"
+    - if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref
+        == 'refs/heads/master')
+      name: Docker push :1.33
+      run: |-
+        set -eu -o pipefail
+        set -x
+        docker tag "docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.33"
+        docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.33"
     - name: Check generated files
       run: "set -eu -o pipefail\nset -x\ndocker run --rm -i \"--volume\" \"$PWD:/cwd\"
         \"--workdir=/cwd\" \"docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA\"

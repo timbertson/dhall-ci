@@ -104,9 +104,7 @@ let ci =
             { build = Workflow.Job::{
               , runs-on = CI.Workflow.ubuntu
               , steps =
-                    [ Git.checkout Git.Checkout::{=} : CI.Workflow.Step.Type
-                    , Docker.loginToGithub
-                    ]
+                    [ Git.checkout Git.Checkout::{=}, Docker.loginToGithub ]
                   # opts.ciSteps
                   # [     Workflow.Step.bash
                             ( CI.Docker.runInCwd

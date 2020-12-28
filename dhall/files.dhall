@@ -60,10 +60,9 @@ in  { files =
           Meta.Files::{
           , packages = Meta.Files.default.packages # [ "Meta/package.dhall" ]
           , bumpFiles =
-              [ "dependencies/Workflow.dhall", "dhall/dependencies/CI.dhall" ]
+            [ "dependencies/Workflow.dhall", "dhall/dependencies/CI.dhall" ]
           , ciSteps = workflowTestSteps # dockerSteps
           , ciImage = Docker.commitImage image
-          , bump = Dhall.Bump::{=}
           , readme = Meta.Readme::{
             , repo = "dhall-ci"
             , componentDesc = None Text

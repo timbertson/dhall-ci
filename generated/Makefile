@@ -2,7 +2,7 @@
 # You should NOT edit it manually, your changes will be lost.
 
 .PHONY: ci
-ci: lint
+ci: render lint
 	
 
 .PHONY: eval

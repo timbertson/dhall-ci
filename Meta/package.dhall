@@ -135,9 +135,7 @@ let ci =
 
 let files =
       \(opts : Files.Type) ->
-            (Render.SelfInstall.files Render.SelfInstall::{=}).{ dhall/render
-                                                               , dhall/bump
-                                                               }
+            Render.SelfInstall.files Render.SelfInstall::{=}
         //  { Makefile = Render.TextFile::{
               , contents =
                   Make.render
@@ -145,7 +143,7 @@ let files =
                     , targets =
                           [ Make.Target.Phony::{
                             , name = "ci"
-                            , dependencies = [ "lint" ]
+                            , dependencies = [ "render", "lint" ]
                             , script = opts.ciScript
                             }
                           ]

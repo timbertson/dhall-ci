@@ -4,8 +4,6 @@ let Prelude = ../dependencies/Prelude.dhall
 
 let Meta = ../Meta/package.dhall
 
-let Dhall = CI.Dhall
-
 let Docker = CI.Docker.Workflow
 
 let Workflow = CI.Workflow

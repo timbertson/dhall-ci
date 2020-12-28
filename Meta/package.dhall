@@ -105,6 +105,7 @@ let Files =
           }
         , packages = [ "package.dhall", "dhall/files.dhall" ]
         , bumpFiles = [ "dependencies/CI.dhall", "dhall/files.dhall" ]
+        , bump = Dhall.Bump::{=}
         }
       }
 
@@ -152,7 +153,12 @@ let files =
                             Dhall.Project::{
                             , packages = opts.packages
                             , bumpFiles = opts.bumpFiles
-                            , bump = Some (opts.bump // {freezeCmd = Some "dhall --ascii freeze --inplace"})
+                            , bump = Some
+                                (     opts.bump
+                                  //  { freezeCmd = Some
+                                          "dhall --ascii freeze --inplace"
+                                      }
+                                )
                             }
                             Dhall.Project.Makefile::{=}
                     }

@@ -59,11 +59,11 @@ jobs:
     - name: Check generated files
       run: "set -eu -o pipefail\nset -x\ndocker run --rm -i \"--volume\" \"$PWD:/cwd\"
         \"--workdir=/cwd\" \"docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA\"
-        bash -eu -o pipefail <<EOF_runInDocker\n  dhall/ci\n  if ! git --no-pager
-        diff --patch --exit-code HEAD -- >&2; then\n    set +x\n    echo >&2\n    echo
+        bash -eu -o pipefail <<EOF_runInDocker\n  make ci\n  if ! git --no-pager diff
+        --patch --exit-code HEAD -- >&2; then\n    set +x\n    echo >&2\n    echo
         '--------------------------------' >&2\n    echo 'Uncommitted changes found,
         please run the following locally and commit the changes:' >&2\n    cat >&2
-        <<EOF_diff\n      dhall/ci\n    \nEOF_diff\n    exit 1\n  fi\n\nEOF_runInDocker"
+        <<EOF_diff\n      make ci\n    \nEOF_diff\n    exit 1\n  fi\n\nEOF_runInDocker"
 name: CI
 'on':
   pull_request: {}

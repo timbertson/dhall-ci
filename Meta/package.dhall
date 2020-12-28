@@ -30,6 +30,8 @@ let Workflow = CI.Workflow
 
 let Docker = CI.Docker.Workflow
 
+let Make = CI.Make
+
 let Readme =
       let Opts =
             { owner : Text
@@ -78,12 +80,20 @@ let Readme =
           , contents
           }
 
+let DhallVersion = { tag : Text, dhall : Text, json : Text, yaml : Text }
+
+let dhallVersion =
+      { tag = "1.37", dhall = "1.37.1", json = "1.7.4", yaml = "1.2.4" }
+
 let Files =
       { Type =
           { ciScript : Bash.Type
           , ciSteps : List Workflow.Step.Type
           , ciImage : CI.Docker.Image.Type
           , readme : Readme.Type
+          , packages : List Text
+          , bumpFiles : List Text
+          , bump : Dhall.Bump.Type
           }
       , default =
         { ciScript = [] : Bash.Type
@@ -91,7 +101,10 @@ let Files =
         , ciImage = CI.Docker.Image::{
           , name =
               "${CI.Docker.Registry.githubPackages}/timbertson/dhall-ci/dhall"
+          , tag = Some dhallVersion.tag
           }
+        , packages = [ "package.dhall", "dhall/files.dhall" ]
+        , bumpFiles = [ "dependencies/CI.dhall", "dhall/files.dhall" ]
         }
       }
 
@@ -110,7 +123,7 @@ let ci =
                             ( CI.Docker.runInCwd
                                 CI.Docker.Run::{ image = opts.ciImage }
                                 ( CI.Git.requireCleanWorkspaceAfterRunning
-                                    [ "dhall/ci" ]
+                                    [ "make ci" ]
                                 )
                             )
                       //  { name = Some "Check generated files" }
@@ -121,18 +134,28 @@ let ci =
 
 let files =
       \(opts : Files.Type) ->
-            Render.SelfInstall.files Render.SelfInstall::{=}
-        //  { dhall/ci = Render.Executable::{
+            (Render.SelfInstall.files Render.SelfInstall::{=}).{ dhall/render
+                                                               , dhall/bump
+                                                               }
+        //  { Makefile = Render.TextFile::{
               , contents =
-                  Bash.renderScript
-                    ( Bash.join
-                        [ Dhall.evaluateAndLint
-                            Dhall.Lint::{ file = "package.dhall" }
-                        , Dhall.lint Dhall.Lint::{ file = "dhall/files.dhall" }
-                        , Dhall.render Dhall.Render::{=}
-                        , opts.ciScript
-                        ]
-                    )
+                  Make.render
+                    Make::{
+                    , targets =
+                          [ Make.Target.Phony::{
+                            , name = "ci"
+                            , dependencies = [ "lint" ]
+                            , script = opts.ciScript
+                            }
+                          ]
+                        # Dhall.Project.makefileTargets
+                            Dhall.Project::{
+                            , packages = opts.packages
+                            , bumpFiles = opts.bumpFiles
+                            , bump = Some (opts.bump // {freezeCmd = Some "dhall --ascii freeze --inplace"})
+                            }
+                            Dhall.Project.Makefile::{=}
+                    }
               }
             , `.github/workflows/ci.yml` = (Render.YAMLFile Workflow.Type)::{
               , install = Render.Install.Write
@@ -179,4 +202,4 @@ let files =
               }
             }
 
-in  { files, Files, Readme }
+in  { files, Files, Readme, DhallVersion, dhallVersion }

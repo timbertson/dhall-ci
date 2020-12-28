@@ -9,7 +9,11 @@ let Target =
           , script : Bash.Type
           , phony : Bool
           }
-      , default = { phony = False, dependencies = [] : List Text }
+      , default =
+        { phony = False
+        , dependencies = [] : List Text
+        , script = [] : Bash.Type
+        }
       }
 
 let renderTarget =

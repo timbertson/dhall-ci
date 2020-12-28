@@ -27,17 +27,12 @@ let workflowTestSteps =
             }
       ]
 
-let DhallVersion = { tag : Text, dhall : Text, json : Text, yaml : Text }
+let priorVersions = [] : List Meta.DhallVersion
 
-let dhallVersion =
-      { tag = "1.37", dhall = "1.37.1", json = "1.7.4", yaml = "1.2.4" }
-
-let priorVersions = [] : List DhallVersion
-
-let image = Meta.Files.default.ciImage // { tag = Some dhallVersion.dhall }
+let image = Meta.Files.default.ciImage
 
 let publishVerison =
-      \(version : DhallVersion) ->
+      \(version : Meta.DhallVersion) ->
         Docker.Project.steps
           Docker.Project::{
           , image = image // { tag = Some version.tag }
@@ -55,19 +50,22 @@ let dockerSteps =
         Prelude.List.concat
           Workflow.Step.Type
           ( Prelude.List.map
-              DhallVersion
+              Meta.DhallVersion
               (List Workflow.Step.Type)
               publishVerison
-              ([ dhallVersion ] # priorVersions)
+              ([ Meta.dhallVersion ] # priorVersions)
           )
       : List Workflow.Step.Type
 
 in  { files =
         Meta.files
           Meta.Files::{
-          , ciScript = Dhall.lint Dhall.Lint::{ file = "Meta/package.dhall" }
+          , packages = Meta.Files.default.packages # [ "Meta/package.dhall" ]
+          , bumpFiles =
+              [ "dependencies/Workflow.dhall", "dhall/dependencies/CI.dhall" ]
           , ciSteps = workflowTestSteps # dockerSteps
           , ciImage = Docker.commitImage image
+          , bump = Dhall.Bump::{=}
           , readme = Meta.Readme::{
             , repo = "dhall-ci"
             , componentDesc = None Text

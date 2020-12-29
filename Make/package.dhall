@@ -34,7 +34,7 @@ let renderTarget =
                     ''
               else  ""
 
-        let scriptStr =
+        let body =
               Text/replace
                 "\n"
                 ''
@@ -43,8 +43,9 @@ let renderTarget =
                 (Bash.render target.script)
 
         in  ''
+            .SILENT: ${target.name}
             ${phonyPrefix}${target.name}:${depStr}
-            	${scriptStr}''
+            	${body}''
 
 let Target =
           Target
@@ -55,9 +56,17 @@ let Makefile =
       , default.targets = [] : List Target.Type
       }
 
+let fileOptions =
+      [ "SHELL = bash"
+      , ".SHELLFLAGS = ${Bash.strictFlags} -xc"
+      , ".ONESHELL:"
+      , "\n"
+      ]
+
 let render =
       \(file : Makefile.Type) ->
-            Prelude.Text.concatSep
+            Prelude.Text.concatSep "\n" fileOptions
+        ++  Prelude.Text.concatSep
               "\n\n"
               (Prelude.List.map Target.Type Text renderTarget file.targets)
         ++  "\n"
@@ -81,11 +90,17 @@ let _testRender =
                 ]
               }
         ===  ''
+             SHELL = bash
+             .SHELLFLAGS = -eu -o pipefail -xc
+             .ONESHELL:
+
+             .SILENT: bin
              bin: src/file1 src/file2
              	mkdir -p bin
              	true
              	false
 
+             .SILENT: lint
              .PHONY: lint
              lint:
              	dhall lint

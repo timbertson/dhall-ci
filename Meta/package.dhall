@@ -93,7 +93,7 @@ let Files =
           , readme : Readme.Type
           , packages : List Text
           , bumpFiles : List Text
-          , bump : Dhall.Bump.Type
+          , bumpSpecs : List Text
           }
       , default =
         { ciScript = [] : Bash.Type
@@ -105,7 +105,13 @@ let Files =
           }
         , packages = [ "package.dhall", "dhall/files.dhall" ]
         , bumpFiles = [ "dependencies/CI.dhall", "dhall/files.dhall" ]
-        , bump = Dhall.Bump::{=}
+        , bumpSpecs =
+          [ "timbertson/dhall-ci:"
+          , "timbertson/dhall-ci-git:"
+          , "timbertson/dhall-ci-dhall:"
+          , "timbertson/dhall-ci-docker:"
+          , "timbertson/dhall-render:"
+          ]
         }
       }
 
@@ -150,13 +156,16 @@ let files =
                         # Dhall.Project.makefileTargets
                             Dhall.Project::{
                             , packages = opts.packages
-                            , bumpFiles = opts.bumpFiles
-                            , bump = Some
-                                (     opts.bump
-                                  //  { freezeCmd = Some
-                                          "dhall --ascii freeze --inplace"
-                                      }
-                                )
+                            , bump = Some Dhall.Bump.Semantic::{
+                              , files = opts.bumpFiles
+                              , outputs = opts.packages
+                              , bump = Dhall.Bump::{
+                                , specs = opts.bumpSpecs
+                                , allowUnused = True
+                                , freezeCmd = Some
+                                    "dhall --ascii freeze --inplace"
+                                }
+                              }
                             }
                             Dhall.Project.Makefile::{=}
                     }
@@ -171,6 +180,7 @@ let files =
                   ''
                   generated/** linguist-generated
                   .github/workflows linguist-generated
+                  README.md linguist-generated
                   ''
               }
             , `README.md` = Render.TextFile::{

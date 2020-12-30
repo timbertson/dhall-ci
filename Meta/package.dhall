@@ -80,10 +80,17 @@ let Readme =
           , contents
           }
 
-let DhallVersion = { tag : Text, dhall : Text, json : Text, yaml : Text }
+let DhallVersion =
+      { tag : Text, dhall : Text, json : Text, yaml : Text, docs : Text }
 
 let dhallVersion =
-      { tag = "1.37", dhall = "1.37.1", json = "1.7.4", yaml = "1.2.4" }
+    -- https://github.com/dhall-lang/dhall-haskell/releases
+      { tag = "1.37"
+      , dhall = "1.37.1"
+      , json = "1.7.4"
+      , yaml = "1.2.4"
+      , docs = "1.0.3"
+      }
 
 let Files =
       { Type =

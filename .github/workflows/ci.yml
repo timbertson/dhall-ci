@@ -45,7 +45,7 @@ jobs:
         set -x
         docker pull "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37" || true
         docker pull "docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" || true
-        env DOCKER_BUILDKIT=1 docker "build" "--progress=plain" "--file=Dockerfile" "--build-arg=DHALL_VERSION=1.37.1" "--build-arg=DHALL_JSON_VERSION=1.7.4" "--build-arg=DHALL_YAML_VERSION=1.2.4" "--build-arg=BUILDKIT_INLINE_CACHE=1" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" "."
+        env DOCKER_BUILDKIT=1 docker "build" "--progress=plain" "--file=Dockerfile" "--build-arg=DHALL_VERSION=1.37.1" "--build-arg=DHALL_DOCS_VERSION=1.0.3" "--build-arg=DHALL_JSON_VERSION=1.7.4" "--build-arg=DHALL_YAML_VERSION=1.2.4" "--build-arg=BUILDKIT_INLINE_CACHE=1" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37" "--cache-from=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "--tag=docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)" "."
         docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA"
         docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:$(echo "${BRANCH_REF#refs/heads/}" | tr / -)"
     - if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref

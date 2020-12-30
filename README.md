@@ -56,8 +56,6 @@ https://raw.githubusercontent.com/timbertson/dhall-ci/COMMIT_OR_TAG/package.dhal
 
 (you should `dhall freeze --inplace dhall/CI.dhall` once you've filled in the relevant commits / tags)
 
-Then, if you're using `dhall-render`, you would use it like so:
-
 # Contents:
 
 This repo contains some core types and functionality which is referenced by multiple components. For templates, helpers and opinionated templates you should also import the various components above.

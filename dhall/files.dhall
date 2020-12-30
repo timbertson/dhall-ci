@@ -37,6 +37,7 @@ let publishVerison =
           , build = CI.Docker.Build::{
             , buildArgs =
               [ "DHALL_VERSION=${version.dhall}"
+              , "DHALL_DOCS_VERSION=${version.docs}"
               , "DHALL_JSON_VERSION=${version.json}"
               , "DHALL_YAML_VERSION=${version.yaml}"
               ]

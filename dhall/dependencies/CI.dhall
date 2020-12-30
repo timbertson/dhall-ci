@@ -9,5 +9,6 @@
           env:DHALL_CI_DHALL_OVERRIDE
         ? https://raw.githubusercontent.com/timbertson/dhall-ci-dhall/a4ebf288a0ffabfca38ef962dc1403c9de9f2437/package.dhall sha256:7684592263ff1415a34358ffb9b24568450e1ec7dfdc077e1d2ca6c4152cd04e
     , Render =
-        https://raw.githubusercontent.com/timbertson/dhall-render/8dc1d0e1cbc5acbe01d8d27e2319f69fdbf438f0/package.dhall sha256:b0545d4b0ee773729933a14290d29a0f654eb1681c9825c5a8a72835d24330e0
+          env:DHALL_RENDER_OVERRIDE
+        ? https://raw.githubusercontent.com/timbertson/dhall-render/8dc1d0e1cbc5acbe01d8d27e2319f69fdbf438f0/package.dhall sha256:b0545d4b0ee773729933a14290d29a0f654eb1681c9825c5a8a72835d24330e0
     }

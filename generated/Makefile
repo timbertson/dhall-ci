@@ -96,3 +96,8 @@ bump:
 	bump "timbertson/dhall-ci-dhall:"
 	bump "timbertson/dhall-ci-docker:"
 	bump "timbertson/dhall-render:"
+
+.SILENT: docs
+.PHONY: docs
+docs:
+	dhall-docs --ascii --input "." --output-link "docs"

@@ -1,5 +1,6 @@
-{-
-TODO:
+{-|
+
+# TODO:
 
  - freeze external imports
 
@@ -173,6 +174,7 @@ let files =
                                     "dhall --ascii freeze --inplace"
                                 }
                               }
+                              , docs = Some Dhall.Docs::{=}
                             }
                             Dhall.Project.Makefile::{=}
                     }

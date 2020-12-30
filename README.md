@@ -64,7 +64,9 @@ This repo contains some core types and functionality which is referenced by mult
 
 ### Bash:
 
-An overly simple, leaky abstraction for scripts.
+An overly simple, leaky abstraction for authoring bash scripts.
+
+This is in some ways the inverse of `dhall-bash` - that lets you represent dhall data structures in a way that bash scripts can read them, while this provides functions for composing dhall strings and lists into an executable bash script.
 
 This makes no attempt at understanding the syntax or escaping rules for bash, it's really just "a list of lines".
 

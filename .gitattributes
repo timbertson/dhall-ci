@@ -3,3 +3,4 @@
 
 generated/** linguist-generated
 .github/workflows linguist-generated
+README.md linguist-generated

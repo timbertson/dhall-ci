@@ -35,12 +35,19 @@ let renderTarget =
               else  ""
 
         let body =
-              Text/replace
-                "\n"
-                ''
+              let original = Bash.render target.script
 
-                ${"\t"}''
-                (Bash.render target.script)
+              let escapedDollars = Text/replace "\$" "\$\$" original
+
+              let indented =
+                    Text/replace
+                      "\n"
+                      ''
+
+                      ${"\t"}''
+                      escapedDollars
+
+              in  indented
 
         in  ''
             .SILENT: ${target.name}

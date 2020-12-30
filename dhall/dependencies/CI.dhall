@@ -7,7 +7,7 @@
         ? https://raw.githubusercontent.com/timbertson/dhall-ci-docker/50e3724a71071f00ced1f40b591021f47910710c/package.dhall sha256:2cf44cb0969f10539315445967c347a1cb4ace661080361ea669a405da422d1d
     , Dhall =
           env:DHALL_CI_DHALL_OVERRIDE
-        ? https://raw.githubusercontent.com/timbertson/dhall-ci-dhall/29dce9980cf9d4eeef9eee8f28b852aaa8d1a7ad/package.dhall sha256:c9c3b9d77f9bef54ff723e16723c17f93b979895978b94bd8636ff6869c089ae
+        ? https://raw.githubusercontent.com/timbertson/dhall-ci-dhall/a4ebf288a0ffabfca38ef962dc1403c9de9f2437/package.dhall sha256:7684592263ff1415a34358ffb9b24568450e1ec7dfdc077e1d2ca6c4152cd04e
     , Render =
         https://raw.githubusercontent.com/timbertson/dhall-render/0ab56814a963f93d240c95eaea38cd0875b69857/package.dhall sha256:7d75a0fe2c4b1450f6f9ad54fe1e89de618281ddda9dc2cedb53c36ee17ad4cd
     }

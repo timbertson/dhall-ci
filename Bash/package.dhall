@@ -1,13 +1,11 @@
 {-|
 This module does not define a strong type for bash scripts, it's really just used to support linewise operations (like indenting)
 -}
-
 let Prelude = ../dependencies/Prelude.dhall
 
 let concatSep = Prelude.Text.concatSep
 
-let Bash =
-      List Text
+let Bash = List Text
 
 let render = concatSep "\n" : Bash -> Text
 

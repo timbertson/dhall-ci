@@ -1,14 +1,10 @@
     ../../package.dhall
 /\  { Git =
-          env:DHALL_CI_GIT_OVERRIDE
-        ? https://raw.githubusercontent.com/timbertson/dhall-ci-git/5d17b9deb2f6d60d7371a6abab19da8ede1ce781/package.dhall sha256:d771fc8a26226b3b8290a51bb7bb9b41986f187ee051094209ca0250396cef41
+        https://raw.githubusercontent.com/timbertson/dhall-ci-git/70218fa4722e5307ad95087719ccc5c5bc3eebb4/package.dhall sha256:77197e036afd732474122ea54d52d46d5f45c03360343463e11dc2cb3fdd97dc
     , Docker =
-          env:DHALL_CI_DOCKER_OVERRIDE
-        ? https://raw.githubusercontent.com/timbertson/dhall-ci-docker/50e3724a71071f00ced1f40b591021f47910710c/package.dhall sha256:2cf44cb0969f10539315445967c347a1cb4ace661080361ea669a405da422d1d
+        https://raw.githubusercontent.com/timbertson/dhall-ci-docker/5320df14538e0115a15f5a9fe4044e792ddcd571/package.dhall sha256:ff9dd6928446dba477ca88fe2c70fb347a4e532dc29921e3fa96e586abd33ab8
     , Dhall =
-          env:DHALL_CI_DHALL_OVERRIDE
-        ? https://raw.githubusercontent.com/timbertson/dhall-ci-dhall/9e8efa51ee072f835eee2f14421a28450bc98b3f/package.dhall sha256:3ef0f7b6280202bab82a6e81ba04c979db839bcdd5d5eaccb22efd35ac698b0b
+        https://raw.githubusercontent.com/timbertson/dhall-ci-dhall/1ec38d93efd8aefb2c9feae9a802dd85409a7324/package.dhall sha256:0afb9016f6908904743b12b14e6202b254b1a1b86fee845ab4d270d78b7acbe0
     , Render =
-          env:DHALL_RENDER_OVERRIDE
-        ? https://raw.githubusercontent.com/timbertson/dhall-render/495ed147632df53f4794b5420fdaa8e177dd8932/package.dhall sha256:739c7190ac77e5ceb89a5a515445cc29362bfa64f2c793538d6061922ac48232
+        https://raw.githubusercontent.com/timbertson/dhall-render/6a27c6d0a88bb6fdb387f450580d2916aa7c2c15/package.dhall sha256:92510b6ad30518d8173a57dddb8e9b757e7a72e39a6795d21c16553ccf9fa318
     }

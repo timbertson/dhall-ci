@@ -90,12 +90,13 @@ It's a minimal wrapping of [regadas/github-actions-dhall](https://github.com/reg
 
 # Development workflow
 
-Unfortunately, dhall doesn't make it super easy to "sub in" overrides during development. A pattern I use is:
+Unfortunately, dhall doesn't make it super easy to "sub in" overrides during development. `dhall-render` provides the `dhall/local` script to make this more convenient. Usage:
 
 ```
-env:DHALL_CI_OVERRIDE ? https://raw.githubusercontent.com/timbertson/dhall-ci/..../package.dhall
+./dhall/local ./dhall/render
 ```
 
-That evaluates to the dhall-ci package, unless `DHALL_CI_OVERRIDE` is set, in which case that is used as a dhall expression. A relative file (e.g. `export DHALL_CI_OVERRIDE=../dhall-ci/package.dhall`) works well for this.
+This finds all `*.dhall.local` files, and _temporarily_ replaces the corresponding `*.dhall` file, then runs the supplied command.
 
-Unfortunately, the `?` operator is not built for this. It's actually a fallback operator, which means that if your override can't be loaded (fails to typecheck etc), it'll fallback to the public version without warning, which is pretty frustrating.
+Upon termination, it restores the original contents of the `*.dhall` files, so it should result in no actual changes to your workspace.
+But note that it does actually move files around on disk, so it's not safe to run concurrently.

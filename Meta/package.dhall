@@ -174,7 +174,7 @@ let files =
                                     "dhall --ascii freeze --inplace"
                                 }
                               }
-                              , docs = Some Dhall.Docs::{=}
+                            , docs = Some Dhall.Docs::{=}
                             }
                             Dhall.Project.Makefile::{=}
                     }

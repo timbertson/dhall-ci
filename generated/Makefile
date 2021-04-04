@@ -10,6 +10,12 @@ SHELL = bash
 ci: render lint
 	
 
+.SILENT: digest
+digest:
+	dhall --ascii --plain --file package.dhall
+	dhall --ascii --plain --file dhall/files.dhall
+	dhall --ascii --plain --file Meta/package.dhall
+
 .SILENT: eval
 .PHONY: eval
 eval:

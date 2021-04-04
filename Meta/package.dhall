@@ -147,6 +147,32 @@ let ci =
             }
         }
 
+let selfUpdate =
+      \(opts : Files.Type) ->
+        CI.Workflow::{
+        , name = "CI"
+        , on = Workflow.On::{ schedule = Some [ { cron = "0 * * * *" } ] }
+        , jobs = toMap
+            { update = Workflow.Job::{
+              , runs-on = CI.Workflow.ubuntu
+              , steps =
+                    [ Git.checkout Git.Checkout::{=} ]
+                  # [     Workflow.Step::{
+                          , uses = Some "timbertson/self-update-action@wip"
+                          , `with` = Some
+                              ( toMap
+                                  { setupScript = "make bump"
+                                  , updateScript = "make ci"
+                                  , computedContentScript = "make digest"
+                                  }
+                              )
+                          }
+                      //  { name = Some "Self-update" }
+                    ]
+              }
+            }
+        }
+
 let files =
       \(opts : Files.Type) ->
             Render.SelfInstall.files Render.SelfInstall::{=}
@@ -159,6 +185,17 @@ let files =
                             , name = "ci"
                             , dependencies = [ "render", "lint" ]
                             , script = opts.ciScript
+                            }
+                          , Make.Target.Phony::{
+                            , name = "digest"
+                            , script =
+                                Prelude.List.map
+                                  Text
+                                  Text
+                                  ( \(path : Text) ->
+                                      "dhall --ascii --plain --file " ++ path
+                                  )
+                                  opts.packages
                             }
                           ]
                         # Dhall.Project.makefileTargets
@@ -182,6 +219,11 @@ let files =
             , `.github/workflows/ci.yml` = (Render.YAMLFile Workflow.Type)::{
               , install = Render.Install.Write
               , contents = ci opts
+              }
+            , `.github/workflows/update.yml` = ( Render.YAMLFile Workflow.Type
+                                               )::{
+              , install = Render.Install.Write
+              , contents = selfUpdate opts
               }
             , `.gitattributes` = Render.TextFile::{
               , install = Render.Install.Write

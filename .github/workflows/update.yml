@@ -15,7 +15,7 @@ jobs:
         computedContentScript: make digest
         setupScript: make bump
         updateScript: make ci
-name: CI
+name: Self-update
 'on':
   schedule:
   - cron: 0 * * * *

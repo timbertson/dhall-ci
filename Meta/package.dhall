@@ -150,7 +150,7 @@ let ci =
 let selfUpdate =
       \(opts : Files.Type) ->
         CI.Workflow::{
-        , name = "CI"
+        , name = "Self-update"
         , on = Workflow.On::{ schedule = Some [ { cron = "0 * * * *" } ] }
         , jobs = toMap
             { update = Workflow.Job::{

@@ -11,6 +11,7 @@ ci: render lint
 	
 
 .SILENT: digest
+.PHONY: digest
 digest:
 	dhall --ascii --plain --file package.dhall
 	dhall --ascii --plain --file dhall/files.dhall

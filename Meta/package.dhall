@@ -192,6 +192,12 @@ let files =
                   README.md linguist-generated
                   ''
               }
+            , `.tool-versions` = Render.TextFile::{
+              , contents =
+                  ''
+                  dhall ${dhallVersion.dhall}
+                  ''
+              }
             , `README.md` = Render.TextFile::{
               , install = Render.Install.Write
               , headerFormat = Render.Header.html

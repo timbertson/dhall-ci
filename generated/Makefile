@@ -13,9 +13,9 @@ ci: render lint
 .SILENT: digest
 .PHONY: digest
 digest:
-	dhall --ascii --plain --file package.dhall
-	dhall --ascii --plain --file dhall/files.dhall
-	dhall --ascii --plain --file Meta/package.dhall
+	dhall hash --file package.dhall
+	dhall hash --file dhall/files.dhall
+	dhall hash --file Meta/package.dhall
 
 .SILENT: eval
 .PHONY: eval
@@ -69,40 +69,7 @@ render:
 .SILENT: bump
 .PHONY: bump
 bump:
-	set +x
-	if ! git --no-pager diff --patch --exit-code --; then
-	  echo >&2 'You have working changes, add or commit them first'
-	  exit 1
-	fi
-	function bump {
-	  echo
-	  echo "Applying bump: $$1"
-	  originalHashes=''
-	  finalHashes=''
-	  originalHashes+="$$(dhall hash --file "package.dhall")"
-	  originalHashes+="$$(dhall hash --file "dhall/files.dhall")"
-	  originalHashes+="$$(dhall hash --file "Meta/package.dhall")"
-	  cp "dependencies/Workflow.dhall"{,.orig}
-	  cp "dhall/dependencies/CI.dhall"{,.orig}
-	  dhall/bump --to "$$1" --freeze-cmd="dhall --ascii freeze --inplace" --allow-unused dependencies/Workflow.dhall dhall/dependencies/CI.dhall
-	  finalHashes+="$$(dhall hash --file "package.dhall")"
-	  finalHashes+="$$(dhall hash --file "dhall/files.dhall")"
-	  finalHashes+="$$(dhall hash --file "Meta/package.dhall")"
-	  if [ "$$originalHashes" = "$$finalHashes" ]; then
-	    mv "dependencies/Workflow.dhall"{.orig,}
-	    mv "dhall/dependencies/CI.dhall"{.orig,}
-	    echo "  [Reverting bump: $$1"]
-	  else
-	    rm "dependencies/Workflow.dhall".orig
-	    rm "dhall/dependencies/CI.dhall".orig
-	    echo "Applied: $$1"
-	  fi
-	}
-	bump "timbertson/dhall-ci:"
-	bump "timbertson/dhall-ci-git:"
-	bump "timbertson/dhall-ci-dhall:"
-	bump "timbertson/dhall-ci-docker:"
-	bump "timbertson/dhall-render:"
+	dhall/bump --to "timbertson/dhall-ci:" --to "timbertson/dhall-ci-git:" --to "timbertson/dhall-ci-dhall:" --to "timbertson/dhall-ci-docker:" --to "timbertson/dhall-render:" --if-affects "package.dhall" --if-affects "dhall/files.dhall" --if-affects "Meta/package.dhall" --freeze-cmd="dhall --ascii freeze --inplace" --allow-unused dependencies/Workflow.dhall dhall/dependencies/CI.dhall
 
 .SILENT: docs
 .PHONY: docs

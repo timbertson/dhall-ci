@@ -4,11 +4,6 @@
 
  - freeze external imports
 
- - auto-update workflow
-   - could get tricky. For library dependencies, we want to bump them if the (semantic)
-     hash of the import changes. But for dhall/files dependencies, we should only
-     bother with an update if it alters the result of `./dhall/ci`
-
  - versioning workflow
    - use autorelease action
    - use derived-commits
@@ -112,7 +107,7 @@ let Files =
           , tag = Some dhallVersion.tag
           }
         , packages = [ "package.dhall", "dhall/files.dhall" ]
-        , bumpFiles = [ "dependencies/CI.dhall", "dhall/files.dhall" ]
+        , bumpFiles = [ "dependencies/CI.dhall", "dhall/Meta.dhall" ]
         , bumpSpecs =
           [ "timbertson/dhall-ci:"
           , "timbertson/dhall-ci-git:"
@@ -151,19 +146,29 @@ let selfUpdate =
       \(opts : Files.Type) ->
         CI.Workflow::{
         , name = "Self-update"
-        , on = Workflow.On::{ schedule = Some [ { cron = "0 * * * *" } ] }
+        , on = Workflow.On::{
+          , schedule = Some [ { cron = "0 0 * * 1,4" } ]
+          , push = Some Workflow.Push::{ branches = Some [ "wip" ] }
+          }
         , jobs = toMap
             { update = Workflow.Job::{
               , runs-on = CI.Workflow.ubuntu
               , steps =
                     [ Git.checkout Git.Checkout::{=} ]
-                  # [     Workflow.Step::{
-                          , uses = Some "timbertson/self-update-action@wip"
+                  # [ Workflow.Step::{
+                      , uses = Some "dhall-lang/setup-dhall@v4"
+                      , `with` = Some
+                          ( toMap
+                              { version = dhallVersion.dhall
+                              , github_token = "\${{secrets.GITHUB_TOKEN}}"
+                              }
+                          )
+                      }
+                    ,     Workflow.Step::{
+                          , uses = Some "timbertson/self-update-action@v1"
                           , `with` = Some
                               ( toMap
-                                  { setupScript = "make bump"
-                                  , updateScript = "make ci"
-                                  , computedContentScript = "make digest"
+                                  { updateScript = "make bump ci"
                                   , GITHUB_TOKEN = "\${{secrets.GITHUB_TOKEN}}"
                                   }
                               )
@@ -194,7 +199,7 @@ let files =
                                   Text
                                   Text
                                   ( \(path : Text) ->
-                                      "dhall --ascii --plain --file " ++ path
+                                      "dhall hash --file " ++ path
                                   )
                                   opts.packages
                             }
@@ -202,12 +207,12 @@ let files =
                         # Dhall.Project.makefileTargets
                             Dhall.Project::{
                             , packages = opts.packages
-                            , bump = Some Dhall.Bump.Semantic::{
+                            , bump = Some Dhall.Project.Bump::{
                               , files = opts.bumpFiles
-                              , outputs = opts.packages
-                              , bump = Dhall.Bump::{
+                              , options = Dhall.Bump::{
                                 , specs = opts.bumpSpecs
                                 , allowUnused = True
+                                , ifAffects = opts.packages
                                 , freezeCmd = Some
                                     "dhall --ascii freeze --inplace"
                                 }

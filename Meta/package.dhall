@@ -164,6 +164,7 @@ let selfUpdate =
                                   { setupScript = "make bump"
                                   , updateScript = "make ci"
                                   , computedContentScript = "make digest"
+                                  , GITHUB_TOKEN = "\${{secrets.GITHUB_TOKEN}}"
                                   }
                               )
                           }

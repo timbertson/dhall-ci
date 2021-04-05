@@ -12,6 +12,7 @@ jobs:
     - name: Self-update
       uses: timbertson/self-update-action@wip
       with:
+        GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
         computedContentScript: make digest
         setupScript: make bump
         updateScript: make ci

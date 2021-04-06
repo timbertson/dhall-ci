@@ -154,21 +154,19 @@ let selfUpdate =
             { update = Workflow.Job::{
               , runs-on = CI.Workflow.ubuntu
               , steps =
-                    [ Git.checkout Git.Checkout::{=} ]
-                  # [ Workflow.Step::{
-                      , uses = Some "dhall-lang/setup-dhall@v4"
-                      , `with` = Some
-                          ( toMap
-                              { version = dhallVersion.dhall
-                              , github_token = "\${{secrets.GITHUB_TOKEN}}"
-                              }
-                          )
-                      }
-                    ,     Workflow.Step::{
+                    [ Git.checkout Git.Checkout::{=}, Docker.loginToGithub ]
+                  # [     Workflow.Step::{
                           , uses = Some "timbertson/self-update-action@v1"
                           , `with` = Some
                               ( toMap
-                                  { updateScript = "make bump ci"
+                                  { updateScript =
+                                      Bash.renderScript
+                                        ( CI.Docker.runInCwd
+                                            CI.Docker.Run::{
+                                            , image = Files.default.ciImage
+                                            }
+                                            [ "make bump ci" ]
+                                        )
                                   , GITHUB_TOKEN = "\${{secrets.GITHUB_TOKEN}}"
                                   }
                               )

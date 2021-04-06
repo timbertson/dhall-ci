@@ -163,7 +163,7 @@ let selfUpdate =
                                       Bash.renderScript
                                         ( CI.Docker.runInCwd
                                             CI.Docker.Run::{
-                                            , image = opts.ciImage
+                                            , image = Files.default.ciImage
                                             }
                                             [ "make bump ci" ]
                                         )

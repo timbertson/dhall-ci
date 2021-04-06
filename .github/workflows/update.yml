@@ -25,7 +25,7 @@ jobs:
         updateScript: |
           #!/usr/bin/env bash
           set -eu -o pipefail
-          docker run --rm -i "--volume" "$PWD:/cwd" "--workdir=/cwd" "docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" bash -eu -o pipefail <<EOF_runInDocker
+          docker run --rm -i "--volume" "$PWD:/cwd" "--workdir=/cwd" "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37" bash -eu -o pipefail <<EOF_runInDocker
             make bump ci
 
           EOF_runInDocker

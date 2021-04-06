@@ -1,1 +1,1 @@
-https://raw.githubusercontent.com/regadas/github-actions-dhall/9e380a5a5a101af4ef121ceea9c44be015ac4cc1/schemas.dhall sha256:e83adc0d3858251575b1a1bd779d39ca7894546df3711b811de24f9b59f65868
+https://raw.githubusercontent.com/timbertson/github-actions-dhall/612b38ed9cec826f44989778193abe56aa284be9/schemas.dhall sha256:36c20302ee31979233621e1db84c50a56469cdcfc82e9937642640aa13c03b71

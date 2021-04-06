@@ -149,6 +149,7 @@ let selfUpdate =
         , on = Workflow.On::{
           , schedule = Some [ { cron = "0 0 * * 1,4" } ]
           , push = Some Workflow.Push::{ branches = Some [ "wip" ] }
+          , workflow_dispatch = Some Workflow.WorkflowDispatch.default
           }
         , jobs = toMap
             { update = Workflow.Job::{

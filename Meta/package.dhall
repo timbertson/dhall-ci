@@ -156,7 +156,7 @@ let selfUpdate =
               , steps =
                     [ Git.checkout Git.Checkout::{=}, Docker.loginToGithub ]
                   # [     Workflow.Step::{
-                          , uses = Some "timbertson/self-update-action@v1"
+                          , uses = Some "timbertson/self-update-action@wip"
                           , `with` = Some
                               ( toMap
                                   { updateScript =

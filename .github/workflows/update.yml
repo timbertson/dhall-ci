@@ -19,7 +19,7 @@ jobs:
         $DOCKER_PASSWORD
         EOF
     - name: Self-update
-      uses: timbertson/self-update-action@v1
+      uses: timbertson/self-update-action@wip
       with:
         GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
         updateScript: |

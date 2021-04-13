@@ -3,7 +3,9 @@
   You should NOT edit it manually, your changes will be lost.
 -->
 
-[![CI](https://github.com/timbertson/dhall-ci/workflows/CI/badge.svg)](https://github.com/timbertson/dhall-ci/actions?query=workflow%3ACI+branch%3Amaster)
+[![ci](https://github.com/timbertson/dhall-ci/workflows/ci.yml/badge.svg)](https://github.com/timbertson/dhall-ci/actions/workflows/ci.yml)
+
+[![update](https://github.com/timbertson/dhall-ci/workflows/update.yml/badge.svg)](https://github.com/timbertson/dhall-ci/actions/workflows/update.yml)
 
 # :warning: work in progress
 

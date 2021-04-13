@@ -38,11 +38,12 @@ let Readme =
 
       let statusBadge =
             \(opts : Opts) ->
+            \(workflow : Text) ->
               let img =
-                    "![CI](https://github.com/${opts.owner}/${opts.repo}/workflows/CI/badge.svg)"
+                    "![${workflow}](https://github.com/${opts.owner}/${opts.repo}/workflows/${workflow}.yml/badge.svg)"
 
               let url =
-                    "https://github.com/${opts.owner}/${opts.repo}/actions?query=workflow%3ACI+branch%3Amaster"
+                    "https://github.com/${opts.owner}/${opts.repo}/actions/workflows/${workflow}.yml"
 
               in  "[${img}](${url})"
 
@@ -67,7 +68,10 @@ let Readme =
               let allParts =
                     Prelude.List.concat
                       Text
-                      [ [ statusBadge opts ], componentHeader opts, opts.parts ]
+                      [ [ statusBadge opts "ci", statusBadge opts "update" ]
+                      , componentHeader opts
+                      , opts.parts
+                      ]
 
               in  Prelude.Text.concatSep "\n\n" allParts
 
@@ -155,7 +159,10 @@ let selfUpdate =
             { update = Workflow.Job::{
               , runs-on = CI.Workflow.ubuntu
               , steps =
-                    [ Git.checkout Git.Checkout::{=}, Docker.loginToGithub ]
+                    [ Git.checkout
+                        Git.Checkout::{ token = Some "settings.GITHUB_PAT" }
+                    , Docker.loginToGithub
+                    ]
                   # [     Workflow.Step::{
                           , uses = Some "timbertson/self-update-action@v1"
                           , `with` = Some

@@ -1,6 +1,6 @@
     ../../package.dhall
 /\  { Git =
-        https://raw.githubusercontent.com/timbertson/dhall-ci-git/69ab02557c4eb01921ec84a118b4af36bb6481d4/package.dhall sha256:8677ab51324855f8b0f3f666f72e9b30fb3f1451b3d2220dd72af91f3b2eba81
+        https://raw.githubusercontent.com/timbertson/dhall-ci-git/812bf7407b5b3243bbac9c9c7724302de59b3705/package.dhall sha256:f8071927cf5f6ae54968ee72806efa4b2efb9cbd1916fb46d3c1c1816465ea52
     , Docker =
         https://raw.githubusercontent.com/timbertson/dhall-ci-docker/59c3da96fcbabab26a85a65eae617cb29a7786db/package.dhall sha256:ff9dd6928446dba477ca88fe2c70fb347a4e532dc29921e3fa96e586abd33ab8
     , Dhall =

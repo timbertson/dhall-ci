@@ -40,7 +40,7 @@ let Readme =
             \(opts : Opts) ->
             \(workflow : Text) ->
               let img =
-                    "![${workflow}](https://github.com/${opts.owner}/${opts.repo}/workflows/${workflow}.yml/badge.svg)"
+                    "![${workflow}](https://github.com/${opts.owner}/${opts.repo}/actions/workflows/${workflow}.yml/badge.svg)"
 
               let url =
                     "https://github.com/${opts.owner}/${opts.repo}/actions/workflows/${workflow}.yml"

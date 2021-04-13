@@ -160,7 +160,7 @@ let selfUpdate =
               , runs-on = CI.Workflow.ubuntu
               , steps =
                     [ Git.checkout
-                        Git.Checkout::{ token = Some "settings.GHTOKEN_PAT" }
+                        Git.Checkout::{ token = Some "secrets.GHTOKEN_PAT" }
                     , Docker.loginToGithub
                     ]
                   # [     Workflow.Step::{

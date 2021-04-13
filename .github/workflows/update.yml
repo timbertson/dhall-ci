@@ -9,7 +9,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: '1'
-        token: "${{ settings.GHTOKEN_PAT }}"
+        token: "${{ secrets.GHTOKEN_PAT }}"
     - env:
         DOCKER_PASSWORD: "${{ secrets.GITHUB_TOKEN }}"
       name: Login to docker.pkg.github.com

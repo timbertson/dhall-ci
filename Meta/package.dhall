@@ -65,13 +65,15 @@ let Readme =
 
       let contents =
             \(opts : Opts) ->
+              let badges =
+                    Prelude.Text.concatSep
+                      " "
+                      [ statusBadge opts "ci", statusBadge opts "update" ]
+
               let allParts =
                     Prelude.List.concat
                       Text
-                      [ [ statusBadge opts "ci", statusBadge opts "update" ]
-                      , componentHeader opts
-                      , opts.parts
-                      ]
+                      [ [ badges ], componentHeader opts, opts.parts ]
 
               in  Prelude.Text.concatSep "\n\n" allParts
 

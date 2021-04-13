@@ -9,7 +9,6 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: '1'
-        token: "${{ secrets.GHTOKEN_PAT }}"
     - env:
         DOCKER_PASSWORD: "${{ secrets.GITHUB_TOKEN }}"
       name: Login to docker.pkg.github.com
@@ -22,6 +21,7 @@ jobs:
     - name: Self-update
       uses: timbertson/self-update-action@v1
       with:
+        GITHUB_TOKEN: "${{secrets.GHTOKEN_PAT}}"
         updateScript: |
           #!/usr/bin/env bash
           set -eu -o pipefail

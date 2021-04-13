@@ -159,10 +159,7 @@ let selfUpdate =
             { update = Workflow.Job::{
               , runs-on = CI.Workflow.ubuntu
               , steps =
-                    [ Git.checkout
-                        Git.Checkout::{ token = Some "secrets.GHTOKEN_PAT" }
-                    , Docker.loginToGithub
-                    ]
+                    [ Git.checkout Git.Checkout::{=}, Docker.loginToGithub ]
                   # [     Workflow.Step::{
                           , uses = Some "timbertson/self-update-action@v1"
                           , `with` = Some
@@ -175,6 +172,7 @@ let selfUpdate =
                                             }
                                             [ "make bump ci" ]
                                         )
+                                  , GITHUB_TOKEN = "\${{secrets.GHTOKEN_PAT}}"
                                   }
                               )
                           }

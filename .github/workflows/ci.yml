@@ -30,7 +30,7 @@ jobs:
     - env:
         result: "${{ (github.event_name == 'pull_request' && format('refs/heads/{0}',
           github.head_ref)) || github.ref }}"
-      if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref
         == 'refs/heads/master')
       name: Test branchRef (push)
       run: |-
@@ -56,6 +56,23 @@ jobs:
         set -x
         docker tag "docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA" "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37"
         docker push "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37"
+    - env:
+        branchRef: "${{ (github.event_name == 'pull_request' && format('refs/heads/{0}',
+          github.head_ref)) || github.ref }}"
+        commit: "${{ github.sha }}"
+      name: Test bootstrap script
+      run: |-
+        set -eu -o pipefail
+        set -x
+        docker run --rm -i "--volume" "$PWD:/cwd" "--workdir=/cwd" "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37" bash -eu -o pipefail <<EOF_runInDocker
+          set -x
+          mkdir test-bootstrap
+          cd test-bootstrap
+          curl -sSL "https://raw.githubusercontent.com/timbertson/dhall-ci/$commit/bootstrap.sh" | env BRANCH_OVERRIDE="${branchRef#refs/heads/}" bash
+          cd ..
+          rm -r test-bootstrap
+
+        EOF_runInDocker
     - name: Check generated files
       run: "set -eu -o pipefail\nset -x\ndocker run --rm -i \"--volume\" \"$PWD:/cwd\"
         \"--workdir=/cwd\" \"docker.pkg.github.com/timbertson/dhall-ci/dhall:$GITHUB_SHA\"

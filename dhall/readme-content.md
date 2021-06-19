@@ -8,6 +8,14 @@ Dhall provides (I believe) a very well-fitting solution to this problem, because
  - distributed (import code straight from the internet)
  - strongly typed (more errors at compile time = less error at the end of a slow CI build)
 
+# Getting started:
+
+```
+curl -sSL 'https://raw.githubusercontent.com/timbertson/dhall-ci/master/bootstrap.sh' | bash
+```
+
+This will populate a minimal set of files in the current directory (`dhall/files.dhall` and `dhall/dependencies/CI.dhall`), and then run an initial file generation.
+
 # Components:
 
 This solution is intentionally decentralised, because:

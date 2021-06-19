@@ -6,7 +6,7 @@ in  { isPush
     , isPullRequest
     , isPushToMain =
         -- (or master)
-        "${isPush} && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/master')"
+        "${isPush} && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')"
     , branchRef =
         -- GH expressions strangely lack a builtin for this.
         -- `github.head_ref` is the branch name, only defined for a PR

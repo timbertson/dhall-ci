@@ -28,6 +28,8 @@ let Docker = CI.Docker.Workflow
 
 let Make = CI.Make
 
+let Licence = < APL >
+
 let Readme =
       let Opts =
             { owner : Text
@@ -100,6 +102,8 @@ let Files =
           , ciSteps : List Workflow.Step.Type
           , ciImage : CI.Docker.Image.Type
           , readme : Readme.Type
+          , authorName: Text
+          , copyrightYear: Text
           , packages : List Text
           , bumpFiles : List Text
           , bumpSpecs : List Text
@@ -114,6 +118,8 @@ let Files =
           }
         , packages = [ "package.dhall", "dhall/files.dhall" ]
         , bumpFiles = [ "dependencies/CI.dhall", "dhall/Meta.dhall" ]
+        , authorName = "Tim Cuthbertson"
+        , copyrightYear = "2020"
         , bumpSpecs =
           [ "timbertson/dhall-ci:"
           , "timbertson/dhall-ci-git:"
@@ -258,9 +264,10 @@ let files =
               }
             , LICENCE = Render.TextFile::{
               , install = Render.Install.Write
+              , headerFormat = Render.Header.ignore
               , contents =
                   ''
-                  Copyright 2020 Tim Cuthbertson
+                  Copyright ${opts.copyrightYear} ${opts.authorName}
 
                   Licensed under the Apache License, Version 2.0 (the "License");
                   you may not use this file except in compliance with the License.

@@ -1,15 +1,3 @@
-{-|
-
-# TODO:
-
- - freeze external imports
-
- - versioning workflow
-   - use autorelease action
-   - use derived-commits
-   - cleanup derived branches
-
--}
 let CI = ../dhall/dependencies/CI.dhall
 
 let Prelude = ../dependencies/Prelude.dhall
@@ -27,8 +15,6 @@ let Workflow = CI.Workflow
 let Docker = CI.Docker.Workflow
 
 let Make = CI.Make
-
-let Licence = < APL >
 
 let Readme =
       let Opts =
@@ -102,8 +88,8 @@ let Files =
           , ciSteps : List Workflow.Step.Type
           , ciImage : CI.Docker.Image.Type
           , readme : Readme.Type
-          , authorName: Text
-          , copyrightYear: Text
+          , authorName : Text
+          , copyrightYear : Text
           , packages : List Text
           , bumpFiles : List Text
           , bumpSpecs : List Text
@@ -154,41 +140,15 @@ let ci =
             }
         }
 
+let SelfUpdate = ./SelfUpdate.dhall
+
 let selfUpdate =
       \(opts : Files.Type) ->
-        CI.Workflow::{
-        , name = "Self-update"
-        , on = Workflow.On::{
-          , schedule = Some [ { cron = "0 0 * * 1,4" } ]
-          , push = Some Workflow.Push::{ branches = Some [ "wip" ] }
-          , workflow_dispatch = Some Workflow.WorkflowDispatch.default
+        SelfUpdate.workflow
+          SelfUpdate::{
+          , dhallImage = Files.default.ciImage
+          , update = [ "make bump ci" ]
           }
-        , jobs = toMap
-            { update = Workflow.Job::{
-              , runs-on = CI.Workflow.ubuntu
-              , steps =
-                    [ Git.checkout Git.Checkout::{=}, Docker.loginToGithub ]
-                  # [     Workflow.Step::{
-                          , uses = Some "timbertson/self-update-action@v1"
-                          , `with` = Some
-                              ( toMap
-                                  { updateScript =
-                                      Bash.renderScript
-                                        ( CI.Docker.runInCwd
-                                            CI.Docker.Run::{
-                                            , image = Files.default.ciImage
-                                            }
-                                            [ "make bump ci" ]
-                                        )
-                                  , GITHUB_TOKEN = "\${{secrets.GHTOKEN_PAT}}"
-                                  }
-                              )
-                          }
-                      //  { name = Some "Self-update" }
-                    ]
-              }
-            }
-        }
 
 let files =
       \(opts : Files.Type) ->

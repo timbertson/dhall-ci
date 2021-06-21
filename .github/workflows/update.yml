@@ -22,11 +22,18 @@ jobs:
       uses: timbertson/self-update-action@v1
       with:
         GITHUB_TOKEN: "${{secrets.GHTOKEN_PAT}}"
+        setupScript: |
+          #!/usr/bin/env bash
+          set -eu -o pipefail
+          docker run --rm -i "--volume" "$PWD:/cwd" "--workdir=/cwd" "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37" bash -eu -o pipefail <<EOF_runInDocker
+            make bump
+
+          EOF_runInDocker
         updateScript: |
           #!/usr/bin/env bash
           set -eu -o pipefail
           docker run --rm -i "--volume" "$PWD:/cwd" "--workdir=/cwd" "docker.pkg.github.com/timbertson/dhall-ci/dhall:1.37" bash -eu -o pipefail <<EOF_runInDocker
-            make bump ci
+            make ci
 
           EOF_runInDocker
 name: Update

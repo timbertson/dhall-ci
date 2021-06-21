@@ -140,7 +140,8 @@ let selfUpdate =
         SelfUpdate.workflow
           SelfUpdate::{
           , dhallImage = Files.default.ciImage
-          , update = [ "make bump ci" ]
+          , bump = [ "make bump" ]
+          , render = [ "make ci" ]
           }
 
 let files =

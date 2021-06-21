@@ -8,7 +8,11 @@ let Workflow = CI.Workflow
 
 let Docker = CI.Docker.Workflow
 
-let Opts = { dhallImage : CI.Docker.Image.Type, update : CI.Bash.Type }
+let Opts =
+      { dhallImage : CI.Docker.Image.Type
+      , bump : CI.Bash.Type
+      , render : CI.Bash.Type
+      }
 
 let default = {=}
 
@@ -30,13 +34,21 @@ let workflow =
                           , uses = Some "timbertson/self-update-action@v1"
                           , `with` = Some
                               ( toMap
-                                  { updateScript =
+                                  { setupScript =
                                       Bash.renderScript
                                         ( CI.Docker.runInCwd
                                             CI.Docker.Run::{
                                             , image = opts.dhallImage
                                             }
-                                            opts.update
+                                            opts.bump
+                                        )
+                                  , updateScript =
+                                      Bash.renderScript
+                                        ( CI.Docker.runInCwd
+                                            CI.Docker.Run::{
+                                            , image = opts.dhallImage
+                                            }
+                                            opts.render
                                         )
                                   , GITHUB_TOKEN = "\${{secrets.GHTOKEN_PAT}}"
                                   }

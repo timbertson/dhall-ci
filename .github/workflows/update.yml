@@ -29,7 +29,7 @@ jobs:
             make bump ci
 
           EOF_runInDocker
-name: Dhall update
+name: Update
 'on':
   push:
     branches:

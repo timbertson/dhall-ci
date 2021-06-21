@@ -86,6 +86,43 @@ let bootstrapTestSteps =
                 }
           ]
 
+let Component =
+      { Type = { owner : Text, repo : Text, desc : Text }
+      , default.owner = "timbertson"
+      }
+
+let StatusBadge = ../Meta/Statusbadge.dhall
+
+let componentListItem =
+      \(c : Component.Type) ->
+        Prelude.Text.concat
+          [ "| "
+          , "[${c.repo}]"
+          , "(https://github.com/${c.owner}/${c.repo})"
+          , " | "
+          , c.desc
+          , " | "
+          , StatusBadge.markdown c.{ owner, repo } "ci"
+          , "<br>"
+          , StatusBadge.markdown c.{ owner, repo } "update"
+          , " |"
+          ]
+
+let componentListItems =
+      \(components : List Component.Type) ->
+            ''
+            | Repository | Description | Status |
+            |------------|-------------|--------|
+            ''
+        ++  Prelude.Text.concatSep
+              "\n"
+              ( Prelude.List.map
+                  Component.Type
+                  Text
+                  componentListItem
+                  components
+              )
+
 in  { files =
         Meta.files
           Meta.Files::{
@@ -97,7 +134,43 @@ in  { files =
           , readme = Meta.Readme::{
             , repo = "dhall-ci"
             , componentDesc = None Text
-            , parts = [ ./readme-content.md as Text ]
+            , parts =
+              [ ./readme-part-1.md as Text
+              , componentListItems
+                  [ Component::{
+                    , repo = "dhall-ci"
+                    , desc =
+                        "(this repo): core types used by many modules (bash, workflow, etc)"
+                    }
+                  , Component::{
+                    , repo = "dhall-ci-dhall"
+                    , desc = "linting, formatting, freezing"
+                    }
+                  , Component::{
+                    , repo = "dhall-ci-docker"
+                    , desc = "building, pushing & running docker images"
+                    }
+                  , Component::{
+                    , repo = "dhall-ci-git"
+                    , desc = "committing, diffing and version management"
+                    }
+                  ]
+              , ''
+                ### Aggregate projects:
+
+                From these raw components, it's useful to build high level, opinionated
+                modules. These suit very narrow use cases, but are extremely useful
+                when you have a lot of near-identical repositories.
+                ''
+              , componentListItems
+                  [ Component::{
+                    , repo = "dhall-ci-timbertson"
+                    , desc =
+                        "My own high-level project types (e.g. Scala library, Nix)"
+                    }
+                  ]
+              , ./readme-part-2.md as Text
+              ]
             }
           }
     }

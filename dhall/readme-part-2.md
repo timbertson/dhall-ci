@@ -1,37 +1,3 @@
-# :warning: work in progress
-
-Maintaining CI for many homogenous repositories is a huge pain.
-
-Dhall provides (I believe) a very well-fitting solution to this problem, because it's:
-
- - simple (much easier to learn than a full programming language)
- - distributed (import code straight from the internet)
- - strongly typed (more errors at compile time = less error at the end of a slow CI build)
-
-# Getting started:
-
-```
-curl -sSL 'https://raw.githubusercontent.com/timbertson/dhall-ci/master/bootstrap.sh' | bash
-```
-
-This will populate a minimal set of files in the current directory (`dhall/files.dhall` and `dhall/dependencies/CI.dhall`), and then run an initial file generation.
-
-# Components:
-
-This solution is intentionally decentralised, because:
-
- - a single repository trying to solve every use case is not going to scale well, and I don't want to have to curate libraries for ecosystems I have never used
- - it's a good opportunity to dogfood the ergonomics of this setup itself, since each component's CI setup is maintained using `dhall-ci`
-
-By building it decentralised in the first place, anyone can contribute to the ecosystem by simply following the common patterns.
-
-If you build your own component and want people to discover it, raise an issue / PR and I'll happily link it here:
-
-- [timbertson/dhall-ci](https://github.com/timbertson/dhall-ci) (this repo): core types used by many modules (bash, workflow, etc)
-- [timbertson/dhall-ci-dhall](https://github.com/timbertson/dhall-ci-dhall): linting, formatting, freezing
-- [timbertson/dhall-ci-docker](https://github.com/timbertson/dhall-ci-docker): building, pushing & running docker images
-- [timbertson/dhall-ci-git](https://github.com/timbertson/dhall-ci-git): committing, diffing and version management
-
 # Rendering files:
 
 The components of `dhall-ci` are useful for defining things (workflows, scripts, etc). But that's not sufficient on its own. [timbertson/dhall-render](https://github.com/timbertson/dhall-render) is a tool which allows you to define a whole set of files, and have them rendered out as YAML / JSON / text.
@@ -42,20 +8,11 @@ To initialize dhall-render in a repository, run:
 curl -sSL https://raw.githubusercontent.com/timbertson/dhall-render/master/bootstrap.sh | bash
 ```
 
-## Suggested usage:
+## Updating files:
 
-The recommended way to import `dhall-ci-*` functionality is to merge additional components on top of the base CI package, like this:
+`dhall-render` provides a file (which will be generated in your repo) to bump a github dependency. Simply run e.g. `./dhall/bump dhall/dependencies/CI.dhall`.
 
-```dhall
--- dhall/CI.dhall
-https://raw.githubusercontent.com/timbertson/dhall-ci/COMMIT_OR_TAG/package.dhall /\
-{
-	, Git = https://raw.githubusercontent.com/timbertson/dhall-ci-git/COMMIT_OR_TAG/package.dhall
-	, Dhall = https://raw.githubusercontent.com/timbertson/dhall-ci-dhall/COMMIT_OR_TAG/package.dhall
-}
-```
-
-(you should `dhall freeze --inplace dhall/CI.dhall` once you've filled in the relevant commits / tags)
+For dependencies that aren't just pulled from a github commit (e.g. dhall's prelude), you will need to manually edit the version number and then run `dhall freeze --inplace dhall/dependencies/Prelude.dhall`
 
 # Contents:
 

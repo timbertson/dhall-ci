@@ -1,6 +1,6 @@
 let CI = ./dependencies/CI.dhall
 
-let Render = CI.Render
+let Render = ./dependencies/Render.dhall
 
 in  { files =
             Render.SelfInstall.files Render.SelfInstall::{=}

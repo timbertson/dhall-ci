@@ -91,7 +91,7 @@ let Component =
       , default.owner = "timbertson"
       }
 
-let StatusBadge = ../Meta/Statusbadge.dhall
+let StatusBadge = ../Meta/StatusBadge.dhall
 
 let componentListItem =
       \(c : Component.Type) ->

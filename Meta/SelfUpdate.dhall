@@ -15,7 +15,7 @@ let default = {=}
 let workflow =
       \(opts : Opts) ->
         CI.Workflow::{
-        , name = "Dhall update"
+        , name = "Update"
         , on = Workflow.On::{
           , schedule = Some [ { cron = "0 0 * * 1,4" } ]
           , push = Some Workflow.Push::{ branches = Some [ "self-upate-test" ] }

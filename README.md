@@ -34,10 +34,24 @@ By building it decentralised in the first place, anyone can contribute to the ec
 
 If you build your own component and want people to discover it, raise an issue / PR and I'll happily link it here:
 
-- [timbertson/dhall-ci](https://github.com/timbertson/dhall-ci) (this repo): core types used by many modules (bash, workflow, etc)
-- [timbertson/dhall-ci-dhall](https://github.com/timbertson/dhall-ci-dhall): linting, formatting, freezing
-- [timbertson/dhall-ci-docker](https://github.com/timbertson/dhall-ci-docker): building, pushing & running docker images
-- [timbertson/dhall-ci-git](https://github.com/timbertson/dhall-ci-git): committing, diffing and version management
+
+| Repository | Description | Status |
+|------------|-------------|--------|
+| [dhall-ci](https://github.com/timbertson/dhall-ci) | (this repo): core types used by many modules (bash, workflow, etc) | [![ci](https://github.com/timbertson/dhall-ci/actions/workflows/ci.yml/badge.svg)](https://github.com/timbertson/dhall-ci/actions/workflows/ci.yml)<br>[![update](https://github.com/timbertson/dhall-ci/actions/workflows/update.yml/badge.svg)](https://github.com/timbertson/dhall-ci/actions/workflows/update.yml) |
+| [dhall-ci-dhall](https://github.com/timbertson/dhall-ci-dhall) | linting, formatting, freezing | [![ci](https://github.com/timbertson/dhall-ci-dhall/actions/workflows/ci.yml/badge.svg)](https://github.com/timbertson/dhall-ci-dhall/actions/workflows/ci.yml)<br>[![update](https://github.com/timbertson/dhall-ci-dhall/actions/workflows/update.yml/badge.svg)](https://github.com/timbertson/dhall-ci-dhall/actions/workflows/update.yml) |
+| [dhall-ci-docker](https://github.com/timbertson/dhall-ci-docker) | building, pushing & running docker images | [![ci](https://github.com/timbertson/dhall-ci-docker/actions/workflows/ci.yml/badge.svg)](https://github.com/timbertson/dhall-ci-docker/actions/workflows/ci.yml)<br>[![update](https://github.com/timbertson/dhall-ci-docker/actions/workflows/update.yml/badge.svg)](https://github.com/timbertson/dhall-ci-docker/actions/workflows/update.yml) |
+| [dhall-ci-git](https://github.com/timbertson/dhall-ci-git) | committing, diffing and version management | [![ci](https://github.com/timbertson/dhall-ci-git/actions/workflows/ci.yml/badge.svg)](https://github.com/timbertson/dhall-ci-git/actions/workflows/ci.yml)<br>[![update](https://github.com/timbertson/dhall-ci-git/actions/workflows/update.yml/badge.svg)](https://github.com/timbertson/dhall-ci-git/actions/workflows/update.yml) |
+
+### Aggregate projects:
+
+From these raw components, it's useful to build high level, opinionated
+modules. These suit very narrow use cases, but are extremely useful
+when you have a lot of near-identical repositories.
+
+
+| Repository | Description | Status |
+|------------|-------------|--------|
+| [dhall-ci-timbertson](https://github.com/timbertson/dhall-ci-timbertson) | My own high-level project types (e.g. Scala library, Nix) | [![ci](https://github.com/timbertson/dhall-ci-timbertson/actions/workflows/ci.yml/badge.svg)](https://github.com/timbertson/dhall-ci-timbertson/actions/workflows/ci.yml)<br>[![update](https://github.com/timbertson/dhall-ci-timbertson/actions/workflows/update.yml/badge.svg)](https://github.com/timbertson/dhall-ci-timbertson/actions/workflows/update.yml) |
 
 # Rendering files:
 
@@ -49,20 +63,11 @@ To initialize dhall-render in a repository, run:
 curl -sSL https://raw.githubusercontent.com/timbertson/dhall-render/master/bootstrap.sh | bash
 ```
 
-## Suggested usage:
+## Updating files:
 
-The recommended way to import `dhall-ci-*` functionality is to merge additional components on top of the base CI package, like this:
+`dhall-render` provides a file (which will be generated in your repo) to bump a github dependency. Simply run e.g. `./dhall/bump dhall/dependencies/CI.dhall`.
 
-```dhall
--- dhall/CI.dhall
-https://raw.githubusercontent.com/timbertson/dhall-ci/COMMIT_OR_TAG/package.dhall /\
-{
-	, Git = https://raw.githubusercontent.com/timbertson/dhall-ci-git/COMMIT_OR_TAG/package.dhall
-	, Dhall = https://raw.githubusercontent.com/timbertson/dhall-ci-dhall/COMMIT_OR_TAG/package.dhall
-}
-```
-
-(you should `dhall freeze --inplace dhall/CI.dhall` once you've filled in the relevant commits / tags)
+For dependencies that aren't just pulled from a github commit (e.g. dhall's prelude), you will need to manually edit the version number and then run `dhall freeze --inplace dhall/dependencies/Prelude.dhall`
 
 # Contents:
 

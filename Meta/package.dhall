@@ -26,14 +26,7 @@ let Readme =
 
       let statusBadge =
             \(opts : Opts) ->
-            \(workflow : Text) ->
-              let img =
-                    "![${workflow}](https://github.com/${opts.owner}/${opts.repo}/actions/workflows/${workflow}.yml/badge.svg)"
-
-              let url =
-                    "https://github.com/${opts.owner}/${opts.repo}/actions/workflows/${workflow}.yml"
-
-              in  "[${img}](${url})"
+              (./StatusBadge.dhall).markdown opts.{ owner, repo }
 
       let componentHeader =
             \(opts : Opts) ->

@@ -1,1 +1,2 @@
-https://raw.githubusercontent.com/timbertson/github-actions-dhall/612b38ed9cec826f44989778193abe56aa284be9/schemas.dhall sha256:36c20302ee31979233621e1db84c50a56469cdcfc82e9937642640aa13c03b71
+https://raw.githubusercontent.com/timbertson/github-actions-dhall/612b38ed9cec826f44989778193abe56aa284be9/schemas.dhall
+  sha256:36c20302ee31979233621e1db84c50a56469cdcfc82e9937642640aa13c03b71

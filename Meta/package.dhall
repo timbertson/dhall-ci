@@ -2,6 +2,8 @@ let CI = ../dhall/dependencies/CI.dhall
 
 let Prelude = ../dependencies/Prelude.dhall
 
+let SelfUpdate = ./SelfUpdate.dhall
+
 let Bash = CI.Bash
 
 let Git = CI.Git.Workflow
@@ -132,8 +134,6 @@ let ci =
               }
             }
         }
-
-let SelfUpdate = ./SelfUpdate.dhall
 
 let selfUpdate =
       \(opts : Files.Type) ->

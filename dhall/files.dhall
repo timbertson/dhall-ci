@@ -4,6 +4,8 @@ let Prelude = ../dependencies/Prelude.dhall
 
 let Meta = ../Meta/package.dhall
 
+let StatusBadge = ../Meta/StatusBadge.dhall
+
 let Docker = CI.Docker
 
 let DockerWorkflow = CI.Docker.Workflow
@@ -90,8 +92,6 @@ let Component =
       { Type = { owner : Text, repo : Text, desc : Text }
       , default.owner = "timbertson"
       }
-
-let StatusBadge = ../Meta/StatusBadge.dhall
 
 let componentListItem =
       \(c : Component.Type) ->

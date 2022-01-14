@@ -11,7 +11,7 @@
             https://raw.githubusercontent.com/timbertson/dhall-ci-dhall/d0782293dba69fcefa8cee4b5890a5e0d2ddc181/package.dhall
               sha256:9c032dd7d5ff168b1cc25eda52a716b6cfee98d7a08380ac349a1161c7b5a7f3
         , Render =
-            https://raw.githubusercontent.com/timbertson/dhall-render/34befa0818f2f8205e1184cec3c3ce3b4b9e46dc/package.dhall
-              sha256:5722af993090855bc686d37580b1141266f507c0770d7083e50e899e7cd95e8e
+            https://raw.githubusercontent.com/timbertson/dhall-render/4001294bb35a2fdc8dd5933bf321574058b6c427/package.dhall
+              sha256:6722983dba3cd841ed3d3e45496f46e0766203d47cf9473db635a156ad240a46
         }
     )

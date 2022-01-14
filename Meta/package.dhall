@@ -70,11 +70,11 @@ let DhallVersion =
 
 let dhallVersion =
     -- https://github.com/dhall-lang/dhall-haskell/releases
-      { tag = "1.37"
-      , dhall = "1.37.1"
-      , json = "1.7.4"
-      , yaml = "1.2.4"
-      , docs = "1.0.3"
+      { tag = "1.40"
+      , dhall = "1.40.2"
+      , json = "1.7.9"
+      , yaml = "1.2.9"
+      , docs = "1.0.8"
       }
 
 let Files =

@@ -1,11 +1,6 @@
 let deps =
         ( \(local : Bool) ->
-              { Git = ../../../dhall-ci-git/package.dhall
-              , Docker = ../../../dhall-ci-docker/package.dhall
-              , Dhall = ../../../dhall-ci-dhall/package.dhall
-              , Render = ../../../dhall-render/package.dhall
-              }
-            ? local "import failed"
+            local "import failed"
         )
           env:DHALL_LOCAL
       ? { Git =

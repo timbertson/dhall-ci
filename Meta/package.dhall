@@ -245,4 +245,4 @@ let files =
               }
             }
 
-in  { files, Files, Readme, DhallVersion, dhallVersion }
+in  { files, Files, Readme, DhallVersion, dhallVersion, SelfUpdate }

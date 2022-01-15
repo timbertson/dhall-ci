@@ -1,5 +1,0 @@
-{ Git = ../../../dhall-ci-git/package.dhall
-, Docker = ../../../dhall-ci-docker/package.dhall
-, Dhall = ../../../dhall-ci-dhall/package.dhall
-, Render = ../../../dhall-render/package.dhall
-}

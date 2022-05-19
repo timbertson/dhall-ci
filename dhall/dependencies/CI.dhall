@@ -6,8 +6,8 @@
             sha256:f8071927cf5f6ae54968ee72806efa4b2efb9cbd1916fb46d3c1c1816465ea52
     , Docker =
           env:DHALL_CI_DOCKER
-        ? https://raw.githubusercontent.com/timbertson/dhall-ci-docker/20f24dc02808fb80add0799d1cab742b796fba2a/package.dhall
-            sha256:7ae8c880d6e35d2ef1d7ea7b34cb98fb0dc175c2323bcc6863a9e04067f5a39c
+        ? https://raw.githubusercontent.com/timbertson/dhall-ci-docker/c37161f9ef8170479b11a8535ad48b7eb0b00700/package.dhall
+            sha256:40a5bf20c9e23622834e8d83686515b03af047a63bbda8c114c1affcae3b7708
     , Dhall =
           env:DHALL_CI_DHALL
         ? https://raw.githubusercontent.com/timbertson/dhall-ci-dhall/3206481d4e9b7510184a089996c8a953e6218eab/package.dhall

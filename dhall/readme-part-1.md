@@ -1,4 +1,8 @@
-# :warning: work in progress
+<img src="http://gfxmonk.net/dist/status/project/dhall-ci.png">
+
+# :warning: this project is inactive; see [chored](https://github.com/timbertson/chored) instead
+
+----
 
 Maintaining CI for many homogenous repositories is a huge pain.
 

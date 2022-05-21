@@ -5,7 +5,11 @@
 
 [![ci](https://github.com/timbertson/dhall-ci/actions/workflows/ci.yml/badge.svg)](https://github.com/timbertson/dhall-ci/actions/workflows/ci.yml) [![update](https://github.com/timbertson/dhall-ci/actions/workflows/update.yml/badge.svg)](https://github.com/timbertson/dhall-ci/actions/workflows/update.yml)
 
-# :warning: work in progress
+<img src="http://gfxmonk.net/dist/status/project/dhall-ci.png">
+
+# :warning: this project is inactive; see [chored](https://github.com/timbertson/chored) instead
+
+----
 
 Maintaining CI for many homogenous repositories is a huge pain.
 
